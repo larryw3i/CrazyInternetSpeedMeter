@@ -1,10 +1,12 @@
 {
-    "name": "Internet Speed Meter",
-    "description": "Simple and minimal internet speed meter extension for the Gnome Shell",
-    "uuid": "InternetSpeedMeter@alshakib.dev",
-    "url": "https://github.com/AlShakib/InternetSpeedMeter",
-    "version": 17,
-    "shell-version": [
-        "45"
-    ]
+  "name": "Crazy Internet Speed Meter",
+  "description": "Simple and minimal internet speed meter extension for the Gnome Shell",
+  "uuid": "CrazyInternetSpeedMeter@larryw3i_at_163.com",
+  "url": "https://github.com/larryw3i/CrazyInternetSpeedMeter",
+  "version-name": "20240126.2201",
+  "shell-version": [
+    "45"
+  ],
+  "gettext-domain": "CrazyInternetSpeedMeter",
+  "settings-schema": "org.gnome.shell.extensions.CrazyInternetSpeedMeter"
 }

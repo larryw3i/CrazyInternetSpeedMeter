@@ -1,9 +1,17 @@
 /*
+ * Name: Crazy Internet Speed Meter
+ * Description: A simple and minimal internet speed meter extension for Gnome Shell.
+ * Author: larryw3i
+ * GitHub: https://github.com/larryw3i/InternetSpeedMeter
+ * License: GPLv3.0
+ * 2024.01.26 -- now
+ *
  * Name: Internet Speed Meter
  * Description: A simple and minimal internet speed meter extension for Gnome Shell.
  * Author: Al Shakib
  * GitHub: https://github.com/AlShakib/InternetSpeedMeter
  * License: GPLv3.0
+ * init -- 2024.01.26
  */
 
 import GLib from "gi://GLib";
@@ -11,10 +19,16 @@ import St from "gi://St";
 import Clutter from "gi://Clutter";
 import Shell from "gi://Shell";
 
-import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
+import { 
+    Extension ,
+    gettext as _,
+    ngettext, 
+    pgettext,
+} from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
-export default class InternetSpeedMeter extends Extension {
+export default class CrazyInternetSpeedMeter extends Extension {
+
   static refreshTimeInSeconds = 1;
   static unitBase = 1024.0; // 1 GB == 1024MB or 1MB == 1024KB etc.
   static units = ["KB/s", "MB/s", "GB/s", "TB/s", "PB/s", "EB/s"];
@@ -26,6 +40,14 @@ export default class InternetSpeedMeter extends Extension {
   container = null;
   netSpeedLabel = null;
   timeoutId = 0;
+  name = "CrazyInternetSpeedMeter";
+  setting_file = `org.gnome.shell.extensions.${this.name}`;
+
+  constructor(metadata) {
+    super(metadata);
+    
+    this.initTranslations(this.name);
+  }
 
   // Read total download and upload bytes from /proc/net/dev file
   getBytes() {
@@ -113,6 +135,7 @@ export default class InternetSpeedMeter extends Extension {
   }
 
   enable() {
+    this._settings = this.getSettings(this.setting_file);
     this.container = new St.Bin({
       reactive: true,
       can_focus: false,
@@ -150,5 +173,8 @@ export default class InternetSpeedMeter extends Extension {
       this.container = null;
     }
     this.netSpeedLabel = null;
+    this._settings = null;
   }
 }
+
+// The end.
