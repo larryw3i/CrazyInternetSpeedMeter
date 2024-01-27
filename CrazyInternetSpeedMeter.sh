@@ -7,7 +7,8 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 # SRC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 EXTENSION_NAME="CrazyInternetSpeedMeter"
-SRC_DIR="${PWD}/${EXTENSION_NAME}"
+PROJECT_DIR="${PWD}"
+SRC_DIR="${PWD}/src"
 OUT_DIR="${PWD}/out"
 LOG_DIR="${SRC_DIR}/log"
 LOG_FILE="${LOG_DIR}/build.log"
@@ -86,28 +87,51 @@ is_warning() {
   fi
 }
 
+make_test(){
+    install
+    echo "Start testing. . ."
+    # export G_MESSAGES_DEBUG=backtrace-segfaults
+    export MUTTER_DEBUG_DUMMY_MODE_SPECS=1366x768
+    # export SHELL_DEBUG=backtrace-warnings
+    export SHELL_DEBUG=backtrace-segfaults
+    dbus-run-session -- gnome-shell --nested --wayland
+}
+
 # install extension
 install() {
   print "Installing to ${INSTALL_DIR}"
   update_version_name
+  compile_schemas
   mkdir -p "${INSTALL_DIR}"
-  rm -rf "${INSTALL_DIR}/@{EXTENSION_FULL_NAME}"
-  cp -rf "${SRC_DIR}/src" "${INSTALL_DIR}/@{EXTENSION_FULL_NAME}" &>> "$LOG_FILE"
-  is_failed "Done" "Skipping: Can not install to ${INSTALL_DIR}. See log for more info."
+  rm -rf "${INSTALL_DIR}/${EXTENSION_FULL_NAME}"
+  cp \
+    -rf \
+    "${SRC_DIR}" \
+    "${INSTALL_DIR}/${EXTENSION_FULL_NAME}" \
+    &>> "$LOG_FILE"
+  is_failed \
+    "Done" \
+    "Skipping: Can not install to ${INSTALL_DIR}. See log for more info."
 }
 
 # build for release
 build() {
-  print "Creating @{EXTENSION_FULL_NAME}.zip"
+  print "Creating ${EXTENSION_FULL_NAME}.zip"
   update_version_name
-  mkdir -p "${SRC_DIR}/out"
-  zip -6rXj "$SRC_DIR/out/@{EXTENSION_FULL_NAME}.zip" "src" &>> "$LOG_FILE"
-  is_failed "Done" "Skipping: Creating zip is failed. See log for more info."
+  mkdir -p "${OUT_DIR}"
+  zip \
+    -6rXj \
+    "${OUT_DIR}/${EXTENSION_FULL_NAME}.zip" \
+    "${SRC_DIR}" \
+    &>> "$LOG_FILE"
+  is_failed \
+    "Done" \
+    "Skipping: Creating zip is failed. See log for more info."
 }
 
 compile_schemas() {
     PWD0="${PWD}"
-    cd ${PWD0}/src
+    cd ${SRC_DIR}
     glib-compile-schemas schemas/
     cd ${PWD0}
 }
@@ -157,6 +181,8 @@ if [[ "${1}" == "-b" ]]; then
   build
 elif [[ "${1}" == "-i" ]]; then
   install
+elif [[ "${1}" == "-t" ]]; then
+  make_test
 else
     ${1}
 fi

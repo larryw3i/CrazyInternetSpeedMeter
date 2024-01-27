@@ -2,7 +2,7 @@
  * Name: Crazy Internet Speed Meter
  * Description: A simple and minimal internet speed meter extension for Gnome Shell.
  * Author: larryw3i
- * GitHub: https://github.com/larryw3i/InternetSpeedMeter
+ * GitHub: https://github.com/larryw3i/CrazyInternetSpeedMeter
  * License: GPLv3.0
  * 2024.01.26 -- now
  *
@@ -15,6 +15,7 @@
  */
 
 import GLib from "gi://GLib";
+import Gio from 'gi://Gio';    
 import St from "gi://St";
 import Clutter from "gi://Clutter";
 import Shell from "gi://Shell";
@@ -26,6 +27,7 @@ import {
     pgettext,
 } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 
 export default class CrazyInternetSpeedMeter extends Extension {
 
@@ -40,13 +42,13 @@ export default class CrazyInternetSpeedMeter extends Extension {
   container = null;
   netSpeedLabel = null;
   timeoutId = 0;
-  name = "CrazyInternetSpeedMeter";
-  setting_file = `org.gnome.shell.extensions.${this.name}`;
+  petName = "CrazyInternetSpeedMeter";
+  setting_file = `org.gnome.shell.extensions.${this.petName}`;
 
   constructor(metadata) {
     super(metadata);
     
-    this.initTranslations(this.name);
+    this.initTranslations(this.petName);
   }
 
   // Read total download and upload bytes from /proc/net/dev file
@@ -88,12 +90,12 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
         // Current upload speed
         let uploadSpeed =
-          (uploadBytes - this.prevUploadBytes) / InternetSpeedMeter.unitBase;
+          (uploadBytes - this.prevUploadBytes) / CrazyInternetSpeedMeter.unitBase;
 
         // Current download speed
         let downloadSpeed =
           (downloadBytes - this.prevDownloadBytes) /
-          InternetSpeedMeter.unitBase;
+          CrazyInternetSpeedMeter.unitBase;
 
         // Show upload + download = total speed on the shell
         this.netSpeedLabel.set_text(
@@ -114,9 +116,9 @@ export default class CrazyInternetSpeedMeter extends Extension {
   // Format bytes to readable string
   getFormattedSpeed(speed) {
     let i = 0;
-    while (speed >= InternetSpeedMeter.unitBase) {
+    while (speed >= CrazyInternetSpeedMeter.unitBase) {
       // Convert speed to KB, MB, GB or TB
-      speed /= InternetSpeedMeter.unitBase;
+      speed /= CrazyInternetSpeedMeter.unitBase;
       ++i;
     }
     speed = speed.toFixed(this.float_scale).toString();
@@ -131,25 +133,58 @@ export default class CrazyInternetSpeedMeter extends Extension {
         : speed_int;
 
     speed = speed_int + "." + speed_float;
-    return speed + InternetSpeedMeter.units[i];
+    return speed + CrazyInternetSpeedMeter.units[i];
   }
 
   enable() {
     this._settings = this.getSettings(this.setting_file);
-    this.container = new St.Bin({
-      reactive: true,
-      can_focus: false,
-      x_expand: true,
-      y_expand: false,
-      track_hover: false,
-    });
+    // this.container = new St.Bin({
+    //   reactive: true,
+    //   can_focus: false,
+    //   x_expand: true,
+    //   y_expand: false,
+    //   track_hover: false,
+    // });
     this.netSpeedLabel = new St.Label({
       text: this.defaultNetSpeedText,
       style_class: "netSpeedLabel",
       y_align: Clutter.ActorAlign.CENTER,
     });
-    this.container.set_child(this.netSpeedLabel);
-    Main.panel._rightBox.insert_child_at_index(this.container, 0);
+
+    // this.container.set_child(this.netSpeedLabel);
+
+    // Create a panel button
+    this._indicator = new PanelMenu.Button(0.0, this.metadata.name, false);
+
+    // Add an icon
+    // const icon = new St.Icon({
+    //     icon_name: 'face-laugh-symbolic',
+    //     style_class: 'system-status-icon',
+    // });
+    this._indicator.add_child(this.netSpeedLabel);
+
+    // Add the indicator to the panel
+    Main.panel.addToStatusArea(this.uuid, this._indicator);
+    // Main.panel._rightBox.insert_child_at_index(this.container, 0);
+    // Main.panel.addToStatusArea(this.uuid,this.container)
+
+    this._indicator.menu.addAction(
+      _('Preferences'),
+      () => this.openPreferences()
+    );
+    this._settings.bind(
+      "show-arrow",
+      // this.container,
+      this._indicator,
+      'visible',
+      Gio.SettingsBindFlags.DEFAULT
+    );
+    this._settings.connect(
+      'changed::show-arrow', 
+      (settings, key) => {
+        console.debug(`${key} = ${settings.get_value(key).print(true)}`);
+      }
+    );
 
     let bytes = this.getBytes();
     this.prevDownloadBytes = bytes[0];
@@ -157,7 +192,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
     this.timeoutId = GLib.timeout_add_seconds(
       GLib.PRIORITY_DEFAULT,
-      InternetSpeedMeter.refreshTimeInSeconds,
+      CrazyInternetSpeedMeter.refreshTimeInSeconds,
       this.updateNetSpeed.bind(this),
     );
   }
