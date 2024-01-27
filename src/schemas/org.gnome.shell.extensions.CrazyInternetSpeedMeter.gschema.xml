@@ -5,5 +5,11 @@
     <key name="show-arrow" type="b">
       <default>false</default>
     </key>
+    <key name="show-byte-per-second-text" type="b">
+      <default>true</default>
+    </key>    
+    <key name="refresh-threshold-in-second" type="i">
+      <default>2</default>
+    </key>
   </schema>
 </schemalist>

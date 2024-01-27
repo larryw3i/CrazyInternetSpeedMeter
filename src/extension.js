@@ -164,7 +164,12 @@ export default class CrazyInternetSpeedMeter extends Extension {
     this._indicator.add_child(this.netSpeedLabel);
 
     // Add the indicator to the panel
-    Main.panel.addToStatusArea(this.uuid, this._indicator);
+    Main.panel.addToStatusArea(
+        this.uuid, 
+        this._indicator,
+        // 0,
+        // 2
+    );
     // Main.panel._rightBox.insert_child_at_index(this.container, 0);
     // Main.panel.addToStatusArea(this.uuid,this.container)
 
