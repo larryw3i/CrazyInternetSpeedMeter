@@ -1,13 +1,15 @@
 /*
  * Name: Crazy Internet Speed Meter
- * Description: A simple and minimal internet speed meter extension for Gnome Shell.
+ * Description: A simple and minimal internet speed meter extension for Gnome
+ * Shell.
  * Author: larryw3i
  * GitHub: https://github.com/larryw3i/CrazyInternetSpeedMeter
  * License: GPLv3.0
  * 2024.01.26 -- now
  *
  * Name: Internet Speed Meter
- * Description: A simple and minimal internet speed meter extension for Gnome Shell.
+ * Description: A simple and minimal internet speed meter extension for Gnome
+ * Shell.
  * Author: Al Shakib
  * GitHub: https://github.com/AlShakib/InternetSpeedMeter
  * License: GPLv3.0
@@ -30,7 +32,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js'
 
 export default class CrazyInternetSpeedMeter extends Extension {
-    static refreshTimeInSeconds = 1
+    // static this.refreshThresholdInSecond = 1
     static unitBase = 1024.0 // 1 GB == 1024MB or 1MB == 1024KB etc.
     static units = ['KB/s', 'MB/s', 'GB/s', 'TB/s', 'PB/s', 'EB/s']
 
@@ -43,6 +45,9 @@ export default class CrazyInternetSpeedMeter extends Extension {
     timeoutId = 0
     petName = 'CrazyInternetSpeedMeter'
     setting_file = `org.gnome.shell.extensions.${this.petName}`
+    showArrow = null
+    showBytePerSecond = null
+    refreshThresholdInSecond = 1
 
     constructor(metadata) {
         super(metadata)
@@ -116,6 +121,10 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
     // Format bytes to readable string
     getFormattedSpeed(speed) {
+        // if this.settings
+        return this.getFormattedSpeedByDefault(speed)
+    }
+    getFormattedSpeedByDefault(speed) {
         let i = 0
         while (speed >= CrazyInternetSpeedMeter.unitBase) {
             // Convert speed to KB, MB, GB or TB
@@ -134,11 +143,29 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 : speed_int
 
         speed = speed_int + '.' + speed_float
-        return speed + CrazyInternetSpeedMeter.units[i]
+
+        if (this.showArrow) {
+            speed = '\u21C5' + speed
+        }
+
+        let speed_unit = CrazyInternetSpeedMeter.units[i]
+        if (this.showBytePerSecondText) {
+            speed_unit = speed_unit.slice(0, -3)
+        }
+        speed = speed + speed_unit
+
+        return speed
     }
 
     enable() {
         this._settings = this.getSettings(this.setting_file)
+        this.showArrow = this._settings.get_boolean('show-arrow')
+        this.showBytePerSecondText = this._settings.get_boolean(
+            'show-byte-per-second-text'
+        )
+        this.refreshThresholdInSecond = this._settings.get_int(
+            'refresh-threshold-in-second'
+        )
         // this.container = new St.Bin({
         //   reactive: true,
         //   can_focus: false,
@@ -177,15 +204,40 @@ export default class CrazyInternetSpeedMeter extends Extension {
         this._indicator.menu.addAction(_('Preferences'), () =>
             this.openPreferences()
         )
-        this._settings.bind(
-            'show-arrow',
-            // this.container,
-            this._indicator,
-            'visible',
-            Gio.SettingsBindFlags.DEFAULT
-        )
-        this._settings.connect('changed::show-arrow', (settings, key) => {
-            console.debug(`${key} = ${settings.get_value(key).print(true)}`)
+        // this._settings.bind(
+        //     'show-arrow',
+        //     // this.container,
+        //     this._indicator,
+        //     'visible',
+        //     Gio.SettingsBindFlags.DEFAULT
+        // )
+        this._settings.connect('changed::show-byte-per-second-text', () => {
+            // console.debug(`${key} = ${settings.get_value(key).print(true)}`)
+            this.showBytePerSecondText = this._settings.get_boolean(
+                'show-byte-per-second-text'
+            )
+        })
+
+        this._settings.connect('changed::refresh-threshold-in-second', () => {
+            // console.debug(`${key} = ${settings.get_value(key).print(true)}`)
+            this.refreshThresholdInSecond = this._settings.get_int(
+                'refresh-threshold-in-second'
+            )
+            if (this.timeoutId != 0) {
+                GLib.Source.remove(this.timeoutId)
+                this.timeoutId = 0
+            }
+
+            this.timeoutId = GLib.timeout_add_seconds(
+                GLib.PRIORITY_DEFAULT,
+                this.refreshThresholdInSecond,
+                this.updateNetSpeed.bind(this)
+            )
+        })
+
+        this._settings.connect('changed::show-arrow', () => {
+            // console.debug(`${key} = ${settings.get_value(key).print(true)}`)
+            this.showArrow = this._settings.get_value('show-arrow')
         })
 
         let bytes = this.getBytes()
@@ -194,7 +246,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
         this.timeoutId = GLib.timeout_add_seconds(
             GLib.PRIORITY_DEFAULT,
-            CrazyInternetSpeedMeter.refreshTimeInSeconds,
+            this.refreshThresholdInSecond,
             this.updateNetSpeed.bind(this)
         )
     }
