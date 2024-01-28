@@ -1,5 +1,8 @@
 repos:
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v4.0.0-alpha.8" # Use the sha or tag you want to point at
-    hooks:
-      - id: prettier
+    - repo: local
+      # rev: # 'v4.0.0-alpha.8' # Use the sha or tag you want to point at
+      hooks:
+          - id: prettier
+            name: Use the prettier command to run Prettier from the command line.
+            language: system
+            entry: npx prettier . --write
