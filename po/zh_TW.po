@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CrazyInternetSpeedMeter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-30 20:24+0800\n"
+"POT-Creation-Date: 2024-01-31 01:28+0800\n"
 "PO-Revision-Date: 2024-01-30 21:01+0800\n"
 "Last-Translator: larryw3i <larryw3i@163.com>\n"
 "Language-Team: Default larryw3i@163.com\n"
@@ -17,54 +17,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4\n"
 
-#: src/extension.js:234
+#: src/extension.js:213
 msgid "Preferences"
 msgstr ""
 
-#: src/prefs.js:32
+#: src/prefs.js:24
 msgid "Crazy Internet Speed Meter"
 msgstr ""
 
-#: src/prefs.js:41
+#: src/prefs.js:30
 msgid "General"
 msgstr ""
 
-#: src/prefs.js:47
+#: src/prefs.js:36
 msgid "Appearance"
 msgstr ""
 
-#: src/prefs.js:49
-msgid "Configure the appearance of {0}."
+#: src/prefs.js:37
+#, javascript-format
+msgid "Configure the appearance of %s."
 msgstr ""
 
-#: src/prefs.js:67
+#: src/prefs.js:54
 msgid "Show right arrow"
 msgstr ""
 
-#: src/prefs.js:68
+#: src/prefs.js:55
 msgid "Whether to show right speed text with arrow."
 msgstr ""
 
-#: src/prefs.js:78
+#: src/prefs.js:65
 msgid "Show left arrow"
 msgstr ""
 
-#: src/prefs.js:79
+#: src/prefs.js:66
 msgid "Whether to show left speed text with arrow."
 msgstr ""
 
-#: src/prefs.js:90
+#: src/prefs.js:77
 msgid "Show 'B/s' text"
 msgstr ""
 
-#: src/prefs.js:91
+#: src/prefs.js:78
 msgid "Whether to show 'B/s' text."
 msgstr ""
 
-#: src/prefs.js:102
+#: src/prefs.js:89
 msgid "Refresh threshold (in second)"
 msgstr ""
 
-#: src/prefs.js:104
+#: src/prefs.js:91
 msgid "Refresh the network traffic speed after specific time."
 msgstr ""

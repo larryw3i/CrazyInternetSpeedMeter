@@ -159,7 +159,7 @@ update_pot() {
         --from-code=UTF-8 \
         --output=${POT_FILE} \
         --package-name=${EXTENSION_NAME} \
-        --package-version=$(jq .".\"version-name\"") \
+        --package-version=$(jq ".\"version-name\"" ${METADATA_FILE}) \
         src/*.js
     echo "Finish extracting."
 
