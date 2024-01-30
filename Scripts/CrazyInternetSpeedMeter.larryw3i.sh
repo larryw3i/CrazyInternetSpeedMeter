@@ -25,6 +25,11 @@ make_venv() {
 
     [[ $(npm config get registry --global) == "undefined" ]] &&
         npm config set registry https://registry.npmmirror.com
+
+    if [[ ! -f $(which shfmt) ]]; then
+        echo "Install shfmt. . ."
+        sudo apt-get install shfmt -y
+    fi
 }
 
 ## $1
