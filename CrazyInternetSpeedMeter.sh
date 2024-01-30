@@ -20,7 +20,13 @@ EXTENSION_REPO_URL="https://github.com/larryw3i/CrazyInternetSpeedMeter"
 [[ ${MAINTAINER_DOMAIN_NAME} == "" ]] && \
     EXTENSION_FULL_NAME="${EXTENSION_NAME}@${MAINTAINER_EMAIL/\@/_at_}" || \
     EXTENSION_FULL_NAME="${EXTENSION_NAME}@${MAINTAINER_DOMAIN_NAME}"
-POT_FILE="${PWD}/po/${EXTENSION_FULL_NAME}"
+POT_FILE="${PWD}/po/${EXTENSION_FULL_NAME}.pot"
+DEFAULT_PACK_FILE="${OUT_DIR}/${EXTENSION_FULL_NAME}.shell-extension.zip"
+
+if [[ $(whoami) == "larry" ]]; then
+    . CrazyInternetSpeedMeter.larryw3i.sh 
+    make_venv
+fi
 
 mkdir -p "${LOG_DIR}"
 if [[ -f "${LOG_FILE}" ]]; then
@@ -87,8 +93,8 @@ is_warning() {
   fi
 }
 
-make_test(){
-    install
+make_test() {
+    install_extension
     echo "Start testing. . ."
     # export G_MESSAGES_DEBUG=backtrace-segfaults
     export MUTTER_DEBUG_DUMMY_MODE_SPECS=1366x768
@@ -97,8 +103,18 @@ make_test(){
     dbus-run-session -- gnome-shell --nested --wayland
 }
 
+install_extension() {
+    pack_extension
+    echo "Install ${DEFAULT_PACK_FILE}. . ."
+    gnome-extensions \
+        install \
+        --force \
+        ${DEFAULT_PACK_FILE}
+    echo "${DEFAULT_PACK_FILE} installed."
+}
+
 # install extension
-install() {
+install_v0() {
   print "Installing to ${INSTALL_DIR}"
   update_version_name
   compile_schemas
@@ -137,20 +153,43 @@ compile_schemas() {
 }
 
 update_pot() {
+    echo "'xgettext' is extracting translatable strings. . ."
     xgettext \
         -v \
         --from-code=UTF-8 \
         --output=${POT_FILE} \
-        *.js
+        --package-name=${EXTENSION_NAME} \
+        --package-version=$(jq .".\"version-name\"") \
+        src/*.js
+    echo "Finish extracting."
+
+    for po_file in $(ls ${PWD}/po/*.po); 
+    do 
+        echo "'msgmerge' is merging ${POT_FILE} to ${po_file}. . ."
+        msgmerge \
+            -U \
+            ${po_file} \
+            ${POT_FILE}
+    done
+
 
 }
 
 pack_extension() {
+    echo "packing extension. . ."
+    update_version_name
+    mkdir -p ${OUT_DIR}
+    if [[ -f ${DEFAULT_PACK_FILE} ]]; then
+        new_extension_zip_file=${DEFAULT_PACK_FILE/.zip/.$(uuid).zip}
+        echo "Move ${DEFAULT_PACK_FILE} to ${new_extension_zip_file}"
+        mv ${DEFAULT_PACK_FILE} ${new_extension_zip_file}
+        echo "Finish moving."
+    fi
     gnome-extensions pack \
-        --podir=po \
-        --gettext-domain=${EXTENSION_NAME} \
+        --podir=${PWD}/po \
         -o ${OUT_DIR} \
-        ${EXTENSION_NAME}
+        ${SRC_DIR}
+    echo "Finish packing."
 }
 
 update_version_name() {
@@ -159,7 +198,12 @@ update_version_name() {
     jq \
         ".\"version-name\" |= \"$(date +%Y%m%d.%H%M)\"" \
         ${METADATA_FILE} \
-        >${METADATA_FILE_CP}
+        >${METADATA_FILE_CP}    
+    # jq \
+    #     ".\"version\" |= \"$(date +%Y%m%d.%H%M)\"" \
+    #     ${METADATA_FILE_CP} \
+    #     >${METADATA_FILE_CP}
+ 
     cp ${METADATA_FILE_CP} ${METADATA_FILE}
     diff_test=$(diff ${METADATA_FILE} ${METADATA_FILE_CP}) 
     if [[ -z ${diff_test} ]]; then
@@ -178,9 +222,12 @@ update_version() {
 
 # Let's start
 if [[ "${1}" == "-b" ]]; then
-  build
+  # build
+  pack_extension
 elif [[ "${1}" == "-i" ]]; then
-  install
+  # pack_extension
+  install_extension
+  # install
 elif [[ "${1}" == "-t" ]]; then
   make_test
 else

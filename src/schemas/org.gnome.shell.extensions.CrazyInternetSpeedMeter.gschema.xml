@@ -2,7 +2,10 @@
 <schemalist>
   <schema id="org.gnome.shell.extensions.CrazyInternetSpeedMeter" 
     path="/org/gnome/shell/extensions/CrazyInternetSpeedMeter/">
-    <key name="show-arrow" type="b">
+   <key name="show-right-arrow" type="b">
+      <default>false</default>
+    </key>
+   <key name="show-left-arrow" type="b">
       <default>false</default>
     </key>
     <key name="show-byte-per-second-text" type="b">

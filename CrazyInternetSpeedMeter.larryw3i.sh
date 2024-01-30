@@ -27,6 +27,6 @@ make_venv(){
     && npm config set registry https://registry.npmmirror.com
 }
 
-$1
+## $1
 
 # The end.

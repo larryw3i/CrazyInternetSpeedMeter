@@ -18,8 +18,20 @@ import {
 
 export default class CrazyInternetSpeedMeterPreferences extends ExtensionPreferences {
     petName = 'CrazyInternetSpeedMeter'
-    petNameWithSpace = 'Crazy Internet Speed Meter'
+    // petNameWithSpace = 'Crazy Internet Speed Meter'
     settingsFile = `org.gnome.shell.extensions.${this.petName}`
+    // gettextDomain="CrazyInternetSpeedMeter@larryw3i_at_163.com"
+
+    // constructor(metadata) {
+    //     super(metadata)
+    //
+    //     this.initTranslations(gettextDomain)
+    // }
+
+    getPetNameWithSpace_T() {
+        return _('Crazy Internet Speed Meter')
+    }
+
     fillPreferencesWindow(window) {
         // window._settings = this.getSettings(this.settings_file);
 
@@ -33,8 +45,8 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
 
         const group = new Adw.PreferencesGroup({
             title: _('Appearance'),
-            description: _(
-                `Configure the appearance of ${this.petNameWithSpace}.`
+            description: _('Configure the appearance of {0}.').format(
+                this.getPetNameWithSpace_T()
             ),
         })
         page.add(group)
@@ -49,14 +61,25 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
          *
          */
 
-        const showArrowRow = new Adw.SwitchRow({
-            title: _('Show Arrow'),
-            subtitle: _('Whether to show speed text with arrow.'),
+        const showRightArrowRow = new Adw.SwitchRow({
+            title: _('Show right arrow'),
+            subtitle: _('Whether to show right speed text with arrow.'),
         })
-        group.add(showArrowRow)
+        group.add(showRightArrowRow)
         window._settings.bind(
-            'show-arrow',
-            showArrowRow,
+            'show-right-arrow',
+            showRightArrowRow,
+            'active',
+            Gio.SettingsBindFlags.DEFAULT
+        )
+        const showLeftArrowRow = new Adw.SwitchRow({
+            title: _('Show left arrow'),
+            subtitle: _('Whether to show left speed text with arrow.'),
+        })
+        group.add(showLeftArrowRow)
+        window._settings.bind(
+            'show-left-arrow',
+            showLeftArrowRow,
             'active',
             Gio.SettingsBindFlags.DEFAULT
         )
@@ -70,7 +93,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
             'show-byte-per-second-text',
             showBytePerSecondTextRow,
             'active',
-            Gio.SettingsBindFlags.DEFAULT
+            Gio.SettingsBindFlags.INVERT_BOOLEAN
         )
 
         const refreshThresholdInSecondRow = new Adw.SpinRow({
