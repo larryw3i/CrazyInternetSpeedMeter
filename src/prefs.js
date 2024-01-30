@@ -18,25 +18,14 @@ import {
 
 export default class CrazyInternetSpeedMeterPreferences extends ExtensionPreferences {
     petName = 'CrazyInternetSpeedMeter'
-    // petNameWithSpace = 'Crazy Internet Speed Meter'
     settingsFile = `org.gnome.shell.extensions.${this.petName}`
-    // gettextDomain="CrazyInternetSpeedMeter@larryw3i_at_163.com"
-
-    // constructor(metadata) {
-    //     super(metadata)
-    //
-    //     this.initTranslations(gettextDomain)
-    // }
 
     getPetNameWithSpace_T() {
         return _('Crazy Internet Speed Meter')
     }
 
     fillPreferencesWindow(window) {
-        // window._settings = this.getSettings(this.settings_file);
-
         window._settings = this.getSettings(this.settings_file)
-        // Create a preferences page, with a single group
         const page = new Adw.PreferencesPage({
             title: _('General'),
             icon_name: 'dialog-information-symbolic',
