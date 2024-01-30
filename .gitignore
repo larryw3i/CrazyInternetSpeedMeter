@@ -3,4 +3,5 @@ out/*
 node_modules/*
 *.mo
 *.log
+*~
 
