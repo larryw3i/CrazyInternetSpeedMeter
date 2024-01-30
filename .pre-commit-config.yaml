@@ -5,8 +5,10 @@ repos:
           - id: prettier
             name: Use the prettier command to format *.js-like files.
             language: system
-            entry: npx prettier . --write
-          # - id: shfmt
-          #   name: Use the shfmt command to format all bash scripts.
-          #   language: system
-          #   entry: shfmt -i 4 -w -ln bash .
+            entry: npx prettier --write . 
+            files: \.(js|css|less)$
+          - id: shfmt
+            name: Use the shfmt command to format all bash scripts.
+            language: system
+            entry: shfmt -i 4 -w -ln bash .
+            files: \.(sh|bash)$
