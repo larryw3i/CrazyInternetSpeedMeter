@@ -34,7 +34,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
 
         const group = new Adw.PreferencesGroup({
             title: _('Appearance'),
-            description: _('Configure the appearance of {0}.').format(
+            description: _('Configure the appearance of %s.').format(
                 this.getPetNameWithSpace_T()
             ),
         })
