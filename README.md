@@ -1,4 +1,4 @@
-# ⇅1023.4kB/s Internet Speed Meter
+# ⇅1023.4KB/s Internet Speed Meter
 
 A simple and minimal Internet Speed Meter extension for the Gnome Shell.
 
