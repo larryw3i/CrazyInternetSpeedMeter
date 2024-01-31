@@ -42,9 +42,6 @@ export default class CrazyInternetSpeedMeter extends Extension {
     container = null
     netSpeedLabel = null
     timeoutId = 0
-    petName = 'CrazyInternetSpeedMeter'
-    gettextDomain = 'CrazyInternetSpeedMeter@larryw3i_at_163.com'
-    setting_file = `org.gnome.shell.extensions.${this.petName}`
 
     getShowRightArrow() {
         return this._settings.get_boolean('show-right-arrow')
@@ -131,23 +128,23 @@ export default class CrazyInternetSpeedMeter extends Extension {
     // Format bytes to readable string
     getFormattedSpeed(speed) {
         // if this.settings
-        return this.getFormattedSpeedByDefault(speed)
-    }
-
-    getFormattedSpeedByDefault(speed) {
         let i = 0
         while (speed >= CrazyInternetSpeedMeter.unitBase) {
             // Convert speed to KB, MB, GB or TB
             speed /= CrazyInternetSpeedMeter.unitBase
             ++i
         }
-        speed = speed.toFixed(this.float_scale).toString()
+        let speed_unit = CrazyInternetSpeedMeter.units[i]
 
+        return this.getFormattedSpeedByDefault(speed, speed_unit)
+    }
+
+    getFormattedSpeedByDefault(speed, speed_unit) {
+        speed = speed.toFixed(this.float_scale).toString()
         let split_speeds = speed.split('.')
         let speed_int = split_speeds[0]
         let speed_float = split_speeds[1]
 
-        // speed_int =
         if (speed_int.length < 4) {
             if (this.getShowLeftArrow()) {
                 speed_int =
@@ -156,19 +153,11 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 speed_int = ' '.repeat(4 - speed_int.length) + speed_int
             }
         }
-
         speed = speed_int + '.' + speed_float
-
-        if (this.getShowLeftArrow() && speed.length < 4) {
-            speed = '\u21C5' + speed
-        }
-
-        let speed_unit = CrazyInternetSpeedMeter.units[i]
         if (this.getShowBytePerSecondText()) {
             speed_unit = speed_unit.slice(0, -3)
         }
         speed = speed + speed_unit
-
         if (this.getShowRightArrow()) {
             speed = speed + '\u21c5'
         }
@@ -189,7 +178,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
     }
 
     enable() {
-        this._settings = this.getSettings(this.setting_file)
+        this._settings = this.getSettings()
 
         this.netSpeedLabel = new St.Label({
             text: this.defaultNetSpeedText,
@@ -203,12 +192,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
         this._indicator.add_child(this.netSpeedLabel)
 
         // Add the indicator to the panel
-        Main.panel.addToStatusArea(
-            this.uuid,
-            this._indicator
-            // 0,
-            // 2
-        )
+        Main.panel.addToStatusArea(this.uuid, this._indicator)
 
         this._indicator.menu.addAction(_('Preferences'), () =>
             this.openPreferences()

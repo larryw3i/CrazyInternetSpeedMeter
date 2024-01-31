@@ -17,15 +17,12 @@ import {
 } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js'
 
 export default class CrazyInternetSpeedMeterPreferences extends ExtensionPreferences {
-    petName = 'CrazyInternetSpeedMeter'
-    settingsFile = `org.gnome.shell.extensions.${this.petName}`
-
     getPetNameWithSpace_T() {
         return _('Crazy Internet Speed Meter')
     }
 
     fillPreferencesWindow(window) {
-        window._settings = this.getSettings(this.settings_file)
+        window._settings = this.getSettings()
         const page = new Adw.PreferencesPage({
             title: _('General'),
             icon_name: 'dialog-information-symbolic',
@@ -95,7 +92,6 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
                 lower: 1,
                 upper: 5,
                 step_increment: 1,
-                // value: window._setting..unpack(),
             }),
         })
         group.add(refreshThresholdInSecondRow)

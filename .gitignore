@@ -4,4 +4,6 @@ node_modules/*
 *.mo
 *.log
 *~
+*.compiled
 
+# The end.
