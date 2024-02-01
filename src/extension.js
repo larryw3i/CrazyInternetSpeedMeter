@@ -59,6 +59,16 @@ export default class CrazyInternetSpeedMeter extends Extension {
         return this._settings.get_int('refresh-threshold-in-second')
     }
 
+    getShowBorder() {
+        return this._settings.get_boolean('show-border')
+    }
+
+    getNetSpeedLabelStyleClass() {
+        return this.getShowBorder()
+            ? 'netSpeedLabelWithBorder'
+            : 'netSpeedLabel'
+    }
+
     // Read total download and upload bytes from /proc/net/dev file
     getBytes() {
         let lines =
@@ -164,16 +174,6 @@ export default class CrazyInternetSpeedMeter extends Extension {
         }
 
         return speed
-    }
-
-    getShowBorder() {
-        return this._settings.get_boolean('show-border')
-    }
-
-    getNetSpeedLabelStyleClass() {
-        return this.getShowBorder()
-            ? 'netSpeedLabelWithBorder'
-            : 'netSpeedLabel'
     }
 
     bindUpdateNetSpeed() {
