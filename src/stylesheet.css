@@ -1,10 +1,18 @@
 /*
-* Name: Internet Speed Meter
-* Description: A simple and minimal internet speed meter extension for Gnome Shell.
-* Author: Al Shakib
-* GitHub: https://github.com/AlShakib/InternetSpeedMeter
-* License: GPLv3.0
-*/
+ * Name: Crazy Internet Speed Meter
+ * Description: A simple and minimal internet speed meter extension for Gnome
+ * Shell.
+ * Author: larryw3i
+ * GitHub: https://github.com/larryw3i/CrazyInternetSpeedMeter
+ * License: GPLv3.0
+ *
+ * Name: Internet Speed Meter
+ * Description: A simple and minimal internet speed meter extension for Gnome
+ * Shell.
+ * Author: Al Shakib
+ * GitHub: https://github.com/AlShakib/InternetSpeedMeter
+ * License: GPLv3.0
+ */
 
 .netSpeedLabel {
     text-align: right;

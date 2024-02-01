@@ -5,7 +5,6 @@
  * Author: larryw3i
  * GitHub: https://github.com/larryw3i/CrazyInternetSpeedMeter
  * License: GPLv3.0
- * 2024.01.26 -- now
  *
  * Name: Internet Speed Meter
  * Description: A simple and minimal internet speed meter extension for Gnome
@@ -13,7 +12,6 @@
  * Author: Al Shakib
  * GitHub: https://github.com/AlShakib/InternetSpeedMeter
  * License: GPLv3.0
- * init -- 2024.01.26
  */
 
 import GLib from 'gi://GLib'

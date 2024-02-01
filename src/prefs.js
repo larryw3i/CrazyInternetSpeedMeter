@@ -3,7 +3,7 @@
  * Description: A simple and minimal internet speed meter extension for Gnome
  * Shell.
  * Author: larryw3i
- * GitHub: https://github.com/larryw3i/InternetSpeedMeter
+ * GitHub: https://github.com/larryw3i/CrazyInternetSpeedMeter
  * License: GPLv3.0
  *
  */
