@@ -49,7 +49,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
 
         const showRightArrowRow = new Adw.SwitchRow({
             title: _('Show right arrow'),
-            subtitle: _('Whether to show right speed text with arrow.'),
+            subtitle: _('Whether to show speed text with right arrow.'),
         })
         group.add(showRightArrowRow)
         window._settings.bind(
@@ -60,7 +60,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
         )
         const showLeftArrowRow = new Adw.SwitchRow({
             title: _('Show left arrow'),
-            subtitle: _('Whether to show left speed text with arrow.'),
+            subtitle: _('Whether to show speed text with left arrow.'),
         })
         group.add(showLeftArrowRow)
         window._settings.bind(
@@ -99,6 +99,18 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
             'refresh-threshold-in-second',
             refreshThresholdInSecondRow,
             'value',
+            Gio.SettingsBindFlags.DEFAULT
+        )
+
+        const showBorderRow = new Adw.SwitchRow({
+            title: _('Show border'),
+            subtitle: _('Whether to show border.'),
+        })
+        group.add(showBorderRow)
+        window._settings.bind(
+            'show-border',
+            showBorderRow,
+            'active',
             Gio.SettingsBindFlags.DEFAULT
         )
     }

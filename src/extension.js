@@ -36,7 +36,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
     static units = ['KB/s', 'MB/s', 'GB/s', 'TB/s', 'PB/s', 'EB/s']
 
     float_scale = 1
-    defaultNetSpeedText = '----.' + '-'.repeat(this.float_scale) + 'KB/s'
+    defaultNetSpeedText = ' '.repeat(this.float_scale + 6)
     prevUploadBytes = 0
     prevDownloadBytes = 0
     container = null
@@ -144,11 +144,12 @@ export default class CrazyInternetSpeedMeter extends Extension {
         let split_speeds = speed.split('.')
         let speed_int = split_speeds[0]
         let speed_float = split_speeds[1]
+        let arrow_char = '\u21c5'
 
         if (speed_int.length < 4) {
             if (this.getShowLeftArrow()) {
                 speed_int =
-                    '\u21c5' + ' '.repeat(3 - speed_int.length) + speed_int
+                    arrow_char + ' '.repeat(3 - speed_int.length) + speed_int
             } else {
                 speed_int = ' '.repeat(4 - speed_int.length) + speed_int
             }
@@ -159,10 +160,20 @@ export default class CrazyInternetSpeedMeter extends Extension {
         }
         speed = speed + speed_unit
         if (this.getShowRightArrow()) {
-            speed = speed + '\u21c5'
+            speed = speed + arrow_char
         }
 
         return speed
+    }
+
+    getShowBorder() {
+        return this._settings.get_boolean('show-border')
+    }
+
+    getNetSpeedLabelStyleClass() {
+        return this.getShowBorder()
+            ? 'netSpeedLabelWithBorder'
+            : 'netSpeedLabel'
     }
 
     bindUpdateNetSpeed() {
@@ -180,15 +191,14 @@ export default class CrazyInternetSpeedMeter extends Extension {
     enable() {
         this._settings = this.getSettings()
 
-        this.netSpeedLabel = new St.Label({
-            text: this.defaultNetSpeedText,
-            style_class: 'netSpeedLabel',
-            y_align: Clutter.ActorAlign.CENTER,
-        })
-
         // Create a panel button
         this._indicator = new PanelMenu.Button(0.0, this.metadata.name, false)
 
+        this.netSpeedLabel = new St.Label({
+            text: this.defaultNetSpeedText,
+            style_class: this.getNetSpeedLabelStyleClass(),
+            y_align: Clutter.ActorAlign.CENTER,
+        })
         this._indicator.add_child(this.netSpeedLabel)
 
         // Add the indicator to the panel
@@ -212,6 +222,12 @@ export default class CrazyInternetSpeedMeter extends Extension {
             if (this.getShowRightArrow()) {
                 this._settings.set_boolean('show-left-arrow', false)
             }
+        })
+
+        this._settings.connect('changed::show-border', () => {
+            this.netSpeedLabel.set_style_class_name(
+                this.getNetSpeedLabelStyleClass()
+            )
         })
 
         let bytes = this.getBytes()

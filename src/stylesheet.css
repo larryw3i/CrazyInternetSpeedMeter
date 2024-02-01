@@ -7,7 +7,15 @@
 */
 
 .netSpeedLabel {
-    text-align: left;
+    text-align: right;
     font-family: monospace;
     color: white;
+}
+
+.netSpeedLabelWithBorder {
+    text-align: right;
+    font-family: monospace;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
 }

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CrazyInternetSpeedMeter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-31 01:28+0800\n"
-"PO-Revision-Date: 2024-01-31 01:31+0800\n"
+"POT-Creation-Date: 2024-02-01 16:59+0800\n"
+"PO-Revision-Date: 2024-02-01 17:00+0800\n"
 "Last-Translator: larryw3i <larryw3i@163.com>\n"
 "Language-Team: Default larryw3i@163.com\n"
 "Language: zh_CN\n"
@@ -17,55 +17,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4\n"
 
-#: src/extension.js:213
+#: src/extension.js:205
 msgid "Preferences"
 msgstr "自定义"
 
-#: src/prefs.js:24
+#: src/prefs.js:21
 msgid "Crazy Internet Speed Meter"
 msgstr "网速表盘"
 
-#: src/prefs.js:30
+#: src/prefs.js:27
 msgid "General"
 msgstr "常用"
 
-#: src/prefs.js:36
+#: src/prefs.js:33
 msgid "Appearance"
 msgstr "显示"
 
-#: src/prefs.js:37
+#: src/prefs.js:34
 #, javascript-format
 msgid "Configure the appearance of %s."
 msgstr "配置 %s 的显示内容。"
 
-#: src/prefs.js:54
+#: src/prefs.js:51
 msgid "Show right arrow"
 msgstr "显示右箭头"
 
-#: src/prefs.js:55
-msgid "Whether to show right speed text with arrow."
-msgstr "是否显示右箭头。"
+#: src/prefs.js:52
+msgid "Whether to show speed text with right arrow."
+msgstr "是否显示左箭头。"
 
-#: src/prefs.js:65
+#: src/prefs.js:62
 msgid "Show left arrow"
 msgstr "显示左箭头"
 
-#: src/prefs.js:66
-msgid "Whether to show left speed text with arrow."
+#: src/prefs.js:63
+msgid "Whether to show speed text with left arrow."
 msgstr "是否显示左箭头。"
 
-#: src/prefs.js:77
+#: src/prefs.js:74
 msgid "Show 'B/s' text"
 msgstr "显示 'B/s'"
 
-#: src/prefs.js:78
+#: src/prefs.js:75
 msgid "Whether to show 'B/s' text."
 msgstr "是否显示 'B/s' 。"
 
-#: src/prefs.js:89
+#: src/prefs.js:86
 msgid "Refresh threshold (in second)"
 msgstr "刷新时间（秒）"
 
-#: src/prefs.js:91
+#: src/prefs.js:88
 msgid "Refresh the network traffic speed after specific time."
 msgstr "网速刷新时间。"
+
+#: src/prefs.js:106
+msgid "Show border"
+msgstr "显示边框"
+
+#: src/prefs.js:107
+msgid "Whether to show border."
+msgstr "是否显示边框。"
+
+#~ msgid "Whether to show right speed text with arrow."
+#~ msgstr "是否显示右箭头。"
