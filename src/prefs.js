@@ -18,10 +18,13 @@ import {
 
 export default class CrazyInternetSpeedMeterPreferences extends ExtensionPreferences {
     getPetNameWithSpace_T() {
-        return _('Crazy Internet Speed Meter')
+        // let petName = _('Crazy Internet Speed Meter')
+        let petName = _('Internet Speed Meter')
+        return petName
     }
 
     fillPreferencesWindow(window) {
+        window.set_title(this.getPetNameWithSpace_T())
         window._settings = this.getSettings()
         const page = new Adw.PreferencesPage({
             title: _('General'),

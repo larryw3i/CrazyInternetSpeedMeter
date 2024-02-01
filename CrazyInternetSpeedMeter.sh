@@ -166,11 +166,12 @@ update_pot() {
     for po_file in $(ls ${PWD}/po/*.po); do
         echo "'msgmerge' is merging ${POT_FILE} to ${po_file}. . ."
         msgmerge \
+            --no-location \
             -U \
             ${po_file} \
             ${POT_FILE}
     done
-
+    echo "Finish merging."
 }
 
 pack_extension() {
