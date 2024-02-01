@@ -40,6 +40,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
     container = null
     netSpeedLabel = null
     timeoutId = 0
+    arrowChar = '\u21c5'
 
     getShowRightArrow() {
         return this._settings.get_boolean('show-right-arrow')
@@ -152,12 +153,13 @@ export default class CrazyInternetSpeedMeter extends Extension {
         let split_speeds = speed.split('.')
         let speed_int = split_speeds[0]
         let speed_float = split_speeds[1]
-        let arrow_char = '\u21c5'
 
         if (speed_int.length < 4) {
             if (this.getShowLeftArrow()) {
                 speed_int =
-                    arrow_char + ' '.repeat(3 - speed_int.length) + speed_int
+                    this.arrowChar +
+                    ' '.repeat(3 - speed_int.length) +
+                    speed_int
             } else {
                 speed_int = ' '.repeat(4 - speed_int.length) + speed_int
             }
@@ -168,7 +170,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
         }
         speed = speed + speed_unit
         if (this.getShowRightArrow()) {
-            speed = speed + arrow_char
+            speed = speed + this.arrowChar
         }
 
         return speed
