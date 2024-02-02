@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CrazyInternetSpeedMeter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-01 21:36+0800\n"
-"PO-Revision-Date: 2024-02-01 21:37+0800\n"
+"POT-Creation-Date: 2024-02-02 09:01+0800\n"
+"PO-Revision-Date: 2024-02-02 09:00+0800\n"
 "Last-Translator: larryw3i <larryw3i@163.com>\n"
 "Language-Team: Default larryw3i@163.com\n"
 "Language: zh_CN\n"
@@ -19,6 +19,9 @@ msgstr ""
 
 msgid "Preferences"
 msgstr "自定义"
+
+msgid "Crazy Internet Speed Meter"
+msgstr "网速表盘"
 
 msgid "Internet Speed Meter"
 msgstr "网速表盘"
@@ -33,17 +36,23 @@ msgstr "显示"
 msgid "Configure the appearance of %s."
 msgstr "配置 %s 的显示内容。"
 
-msgid "Show right arrow"
-msgstr "显示右箭头"
+msgid "Internet speed icon"
+msgstr "网速图标"
 
-msgid "Whether to show speed text with right arrow."
-msgstr "是否显示左箭头。"
+msgid "Select the icon to display next to the text."
+msgstr "选择网速图标。"
 
-msgid "Show left arrow"
-msgstr "显示左箭头"
+msgid "Show right icon"
+msgstr "显示右图标"
 
-msgid "Whether to show speed text with left arrow."
-msgstr "是否显示左箭头。"
+msgid "Whether to show speed text with right icon."
+msgstr "是否显示左图标。"
+
+msgid "Show left icon"
+msgstr "显示左图标"
+
+msgid "Whether to show speed text with left icon."
+msgstr "是否显示左图标。"
 
 msgid "Show 'B/s' text"
 msgstr "显示 'B/s'"

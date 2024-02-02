@@ -184,6 +184,7 @@ pack_extension() {
         mv ${DEFAULT_PACK_FILE} ${new_extension_zip_file}
         echo "Finish moving."
     fi
+    glib-compile-schemas ${SRC_DIR}/schemas/
     gnome-extensions pack \
         --podir=${PWD}/po \
         -o ${OUT_DIR} \

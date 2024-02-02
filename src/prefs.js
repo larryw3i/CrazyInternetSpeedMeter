@@ -17,9 +17,14 @@ import {
 } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js'
 
 export default class CrazyInternetSpeedMeterPreferences extends ExtensionPreferences {
+    netSpeedCharList = new Gtk.StringList({
+        strings: ['\u1be4', '\u27d9', '\u21c5'],
+    })
+
     getPetNameWithSpace_T() {
-        // let petName = _('Crazy Internet Speed Meter')
-        let petName = _('Internet Speed Meter')
+        let petName0 = _('Crazy Internet Speed Meter')
+        let petName1 = _('Internet Speed Meter')
+        let petName = petName1
         return petName
     }
 
@@ -50,25 +55,49 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
          *
          */
 
-        const showRightArrowRow = new Adw.SwitchRow({
-            title: _('Show right arrow'),
-            subtitle: _('Whether to show speed text with right arrow.'),
+        const getSavedNetSpeedCharIndex = () => {
+            let savedNetSpeedChar =
+                window._settings.get_string('net-speed-char')
+            for (let i = 0; i < this.netSpeedCharList.get_n_items(); i++) {
+                if (this.netSpeedCharList.get_string(i) === savedNetSpeedChar) {
+                    return i
+                }
+            }
+            return 0
+        }
+        const netSpeedCharsRow = new Adw.ComboRow({
+            title: _('Internet speed icon'),
+            subtitle: _('Select the icon to display next to the text.'),
+            model: this.netSpeedCharList,
+            selected: getSavedNetSpeedCharIndex(),
         })
-        group.add(showRightArrowRow)
+        group.add(netSpeedCharsRow)
+        netSpeedCharsRow.connect('notify::selected', (widget) => {
+            window._settings.set_string(
+                'net-speed-char',
+                this.netSpeedCharList.get_string(widget.selected)
+            )
+        })
+
+        const showRightCharRow = new Adw.SwitchRow({
+            title: _('Show right icon'),
+            subtitle: _('Whether to show speed text with right icon.'),
+        })
+        group.add(showRightCharRow)
         window._settings.bind(
-            'show-right-arrow',
-            showRightArrowRow,
+            'show-right-char',
+            showRightCharRow,
             'active',
             Gio.SettingsBindFlags.DEFAULT
         )
-        const showLeftArrowRow = new Adw.SwitchRow({
-            title: _('Show left arrow'),
-            subtitle: _('Whether to show speed text with left arrow.'),
+        const showLeftCharRow = new Adw.SwitchRow({
+            title: _('Show left icon'),
+            subtitle: _('Whether to show speed text with left icon.'),
         })
-        group.add(showLeftArrowRow)
+        group.add(showLeftCharRow)
         window._settings.bind(
-            'show-left-arrow',
-            showLeftArrowRow,
+            'show-left-char',
+            showLeftCharRow,
             'active',
             Gio.SettingsBindFlags.DEFAULT
         )

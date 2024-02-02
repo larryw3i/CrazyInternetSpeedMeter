@@ -34,20 +34,18 @@ export default class CrazyInternetSpeedMeter extends Extension {
     static units = ['KB/s', 'MB/s', 'GB/s', 'TB/s', 'PB/s', 'EB/s']
 
     float_scale = 1
-    defaultNetSpeedText = ' '.repeat(this.float_scale + 6)
     prevUploadBytes = 0
     prevDownloadBytes = 0
     container = null
     netSpeedLabel = null
     timeoutId = 0
-    arrowChar = '\u21c5'
 
-    getShowRightArrow() {
-        return this._settings.get_boolean('show-right-arrow')
+    getShowRightChar() {
+        return this._settings.get_boolean('show-right-char')
     }
 
-    getShowLeftArrow() {
-        return this._settings.get_boolean('show-left-arrow')
+    getShowLeftChar() {
+        return this._settings.get_boolean('show-left-char')
     }
 
     getShowBytePerSecondText() {
@@ -60,6 +58,22 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
     getShowBorder() {
         return this._settings.get_boolean('show-border')
+    }
+
+    getNetSpeedChar() {
+        return this._settings.get_string('net-speed-char')
+    }
+
+    getDefaultNetSpeedText() {
+        let char_count = 11
+        if (this.getShowRightChar()) {
+            --char_count
+        }
+        if (this.getShowBytePerSecondText()) {
+            char_count = char_count - 3
+        }
+        let defaultNetSpeedText = ' '.repeat(char_count)
+        return defaultNetSpeedText
     }
 
     getNetSpeedLabelStyleClass() {
@@ -128,7 +142,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 return true
             } catch (e) {
                 log(`Can not fetch internet speed from /proc/net/dev: ${e}`)
-                this.netSpeedLabel.set_text(this.defaultNetSpeedText)
+                this.netSpeedLabel.set_text(this.getDefaultNetSpeedText())
             }
         }
         return false
@@ -155,9 +169,9 @@ export default class CrazyInternetSpeedMeter extends Extension {
         let speed_float = split_speeds[1]
 
         if (speed_int.length < 4) {
-            if (this.getShowLeftArrow()) {
+            if (this.getShowLeftChar()) {
                 speed_int =
-                    this.arrowChar +
+                    this.getNetSpeedChar() +
                     ' '.repeat(3 - speed_int.length) +
                     speed_int
             } else {
@@ -169,8 +183,8 @@ export default class CrazyInternetSpeedMeter extends Extension {
             speed_unit = speed_unit.slice(0, -3)
         }
         speed = speed + speed_unit
-        if (this.getShowRightArrow()) {
-            speed = speed + this.arrowChar
+        if (this.getShowRightChar()) {
+            speed = speed + this.getNetSpeedChar()
         }
 
         return speed
@@ -195,7 +209,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
         this._indicator = new PanelMenu.Button(0.0, this.metadata.name, false)
 
         this.netSpeedLabel = new St.Label({
-            text: this.defaultNetSpeedText,
+            text: this.getDefaultNetSpeedText(),
             style_class: this.getNetSpeedLabelStyleClass(),
             y_align: Clutter.ActorAlign.CENTER,
         })
@@ -212,15 +226,15 @@ export default class CrazyInternetSpeedMeter extends Extension {
             this.bindUpdateNetSpeed()
         })
 
-        this._settings.connect('changed::show-left-arrow', () => {
-            if (this.getShowLeftArrow()) {
-                this._settings.set_boolean('show-right-arrow', false)
+        this._settings.connect('changed::show-left-char', () => {
+            if (this.getShowLeftChar()) {
+                this._settings.set_boolean('show-right-char', false)
             }
         })
 
-        this._settings.connect('changed::show-right-arrow', () => {
-            if (this.getShowRightArrow()) {
-                this._settings.set_boolean('show-left-arrow', false)
+        this._settings.connect('changed::show-right-char', () => {
+            if (this.getShowRightChar()) {
+                this._settings.set_boolean('show-left-char', false)
             }
         })
 
