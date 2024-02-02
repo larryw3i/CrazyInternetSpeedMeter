@@ -18,7 +18,7 @@ import {
 
 export default class CrazyInternetSpeedMeterPreferences extends ExtensionPreferences {
     netSpeedCharList = new Gtk.StringList({
-        strings: ['\u1be4', '\u27d9', '\u21c5'],
+        strings: ['\u16f3', '\u223f', '\u27d9', '\u21c5'],
     })
 
     getPetNameWithSpace_T() {
