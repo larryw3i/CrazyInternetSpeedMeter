@@ -117,7 +117,7 @@ install_extension() {
 install_v0() {
     print "Installing to ${INSTALL_DIR}"
     update_version_name
-    compile_schemas
+    # compile_schemas
     mkdir -p "${INSTALL_DIR}"
     rm -rf "${INSTALL_DIR}/${EXTENSION_FULL_NAME}"
     cp \
@@ -184,7 +184,8 @@ pack_extension() {
         mv ${DEFAULT_PACK_FILE} ${new_extension_zip_file}
         echo "Finish moving."
     fi
-    glib-compile-schemas ${SRC_DIR}/schemas/
+    # glib-compile-schemas ${SRC_DIR}/schemas/
+    compile_schemas
     gnome-extensions pack \
         --podir=${PWD}/po \
         -o ${OUT_DIR} \
@@ -196,7 +197,7 @@ update_version_name() {
     METADATA_FILE_CP=${METADATA_FILE/.json/.0.json}
     # cp ${METADATA_FILE} ${METADATA_FILE_CP}
     jq \
-        ".\"version-name\" |= \"$(date +%Y%m%d.%H%M)\"" \
+        ".\"version-name\" |= \"$(date -u +%Y%m%d.%H%M)\"" \
         ${METADATA_FILE} \
         >${METADATA_FILE_CP}
     # jq \
