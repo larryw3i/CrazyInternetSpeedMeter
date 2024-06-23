@@ -7,6 +7,7 @@ To use this extension, you will need
 -   Gnome Shell 40 or later
 
 ## Install
+
 ### Install from Gnome Extensions
 
 Visit [Crazy Internet Speed Meter - GNOME Shell Extensions](https://extensions.gnome.org/extension/6733/crazy-internet-speed-meter)
