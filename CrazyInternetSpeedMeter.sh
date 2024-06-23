@@ -25,6 +25,7 @@ DEFAULT_PACK_FILE="${OUT_DIR}/${EXTENSION_FULL_NAME}.shell-extension.zip"
 
 if [[ $(whoami) == "larry" ]]; then
     . ${PWD}/Scripts/CrazyInternetSpeedMeter.larryw3i.sh
+
     make_venv
 fi
 
