@@ -64,7 +64,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
         return this._settings.get_string('net-speed-char')
     }
 
-    getDefaultNetSpeedText() {
+    getNetSpeedText0() {
         let char_count = 11
         if (this.getShowRightChar()) {
             --char_count
@@ -142,7 +142,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 return true
             } catch (e) {
                 log(`Can not fetch internet speed from /proc/net/dev: ${e}`)
-                this.netSpeedLabel.set_text(this.getDefaultNetSpeedText())
+                this.netSpeedLabel.set_text(this.getNetSpeedText0())
             }
         }
         return false
@@ -159,10 +159,10 @@ export default class CrazyInternetSpeedMeter extends Extension {
         }
         let speed_unit = CrazyInternetSpeedMeter.units[i]
 
-        return this.getFormattedSpeedByDefault(speed, speed_unit)
+        return this.getFormattedSpeed0(speed, speed_unit)
     }
 
-    getFormattedSpeedByDefault(speed, speed_unit) {
+    getFormattedSpeed0(speed, speed_unit) {
         speed = speed.toFixed(this.float_scale).toString()
         let split_speeds = speed.split('.')
         let speed_int = split_speeds[0]
@@ -209,7 +209,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
         this._indicator = new PanelMenu.Button(0.0, this.metadata.name, false)
 
         this.netSpeedLabel = new St.Label({
-            text: this.getDefaultNetSpeedText(),
+            text: this.getNetSpeedText0(),
             style_class: this.getNetSpeedLabelStyleClass(),
             y_align: Clutter.ActorAlign.CENTER,
         })
