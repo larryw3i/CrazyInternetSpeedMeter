@@ -23,12 +23,6 @@ EXTENSION_REPO_URL="https://github.com/larryw3i/CrazyInternetSpeedMeter"
 POT_FILE="${PWD}/po/${EXTENSION_FULL_NAME}.pot"
 DEFAULT_PACK_FILE="${OUT_DIR}/${EXTENSION_FULL_NAME}.shell-extension.zip"
 
-if [[ $(whoami) == "larry" ]]; then
-    . ${PWD}/Scripts/CrazyInternetSpeedMeter.larryw3i.sh
-
-    make_venv
-fi
-
 mkdir -p "${LOG_DIR}"
 if [[ -f "${LOG_FILE}" ]]; then
     echo '' >>"${LOG_FILE}"

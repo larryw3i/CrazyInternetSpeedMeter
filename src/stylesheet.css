@@ -20,10 +20,7 @@
     color: white;
 }
 
-.netSpeedLabelWithBorder {
-    text-align: right;
-    font-family: monospace;
-    color: white;
+.withBorder {
     border: 1px solid white;
     border-radius: 10px;
 }

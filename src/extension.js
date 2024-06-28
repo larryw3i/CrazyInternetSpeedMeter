@@ -76,10 +76,12 @@ export default class CrazyInternetSpeedMeter extends Extension {
         return defaultNetSpeedText
     }
 
-    getNetSpeedLabelStyleClass() {
-        return this.getShowBorder()
-            ? 'netSpeedLabelWithBorder'
-            : 'netSpeedLabel'
+    getNetSpeedLabelStyleClassName() {
+        let name = 'netSpeedLabel'
+        if (this.getShowBorder()) {
+            name += ' withBorder'
+        }
+        return name
     }
 
     // Read total download and upload bytes from /proc/net/dev file
@@ -210,7 +212,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
         this.netSpeedLabel = new St.Label({
             text: this.getNetSpeedText0(),
-            style_class: this.getNetSpeedLabelStyleClass(),
+            style_class: this.getNetSpeedLabelStyleClassName(),
             y_align: Clutter.ActorAlign.CENTER,
         })
         this._indicator.add_child(this.netSpeedLabel)
@@ -240,7 +242,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
         this._settings.connect('changed::show-border', () => {
             this.netSpeedLabel.set_style_class_name(
-                this.getNetSpeedLabelStyleClass()
+                this.getNetSpeedLabelStyleClassName()
             )
         })
 
