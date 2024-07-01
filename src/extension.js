@@ -37,31 +37,33 @@ export default class CrazyInternetSpeedMeter extends Extension {
     prevUploadBytes = 0
     prevDownloadBytes = 0
     container = null
-    netSpeedLabel = null
     timeoutId = 0
+    _netSpeedLabel = null
+    _indicator = null
+    _settings = null
 
     getShowRightChar() {
-        return this._settings.get_boolean('show-right-char')
+        return this.getSettings().get_boolean('show-right-char')
     }
 
     getShowLeftChar() {
-        return this._settings.get_boolean('show-left-char')
+        return this.getSettings().get_boolean('show-left-char')
     }
 
     getShowBytePerSecondText() {
-        return this._settings.get_boolean('show-byte-per-second-text')
+        return this.getSettings().get_boolean('show-byte-per-second-text')
     }
 
     getRefreshThresholdInSecond() {
-        return this._settings.get_int('refresh-threshold-in-second')
+        return this.getSettings().get_int('refresh-threshold-in-second')
     }
 
     getShowBorder() {
-        return this._settings.get_boolean('show-border')
+        return this.getSettings().get_boolean('show-border')
     }
 
     getNetSpeedChar() {
-        return this._settings.get_string('net-speed-char')
+        return this.getSettings().get_string('net-speed-char')
     }
 
     getNetSpeedText0() {
@@ -85,7 +87,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
     }
 
     // Read total download and upload bytes from /proc/net/dev file
-    getBytes() {
+    getNetBytes() {
         let lines =
             Shell.get_file_contents_utf8_sync('/proc/net/dev').split('\n')
         let downloadBytes = 0
@@ -116,9 +118,15 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
     // Update current net speed to shell
     updateNetSpeed() {
-        if (this.netSpeedLabel != null) {
+        let netSpeedLabel = this.getNetSpeedLabel()
+        if (!this.prevDownloadBytes || !this.prevUploadBytes) {
+            let bytes = this.getNetBytes()
+            this.prevDownloadBytes = bytes[0]
+            this.prevUploadBytes = bytes[1]
+        }
+        if (netSpeedLabel != null) {
             try {
-                let bytes = this.getBytes()
+                let bytes = this.getNetBytes()
                 let downloadBytes = bytes[0]
                 let uploadBytes = bytes[1]
 
@@ -135,7 +143,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
                     CrazyInternetSpeedMeter.unitBase
 
                 // Show upload + download = total speed on the shell
-                this.netSpeedLabel.set_text(
+                netSpeedLabel.set_text(
                     this.getFormattedSpeed(uploadSpeed + downloadSpeed)
                 )
 
@@ -144,7 +152,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 return true
             } catch (e) {
                 log(`Can not fetch internet speed from /proc/net/dev: ${e}`)
-                this.netSpeedLabel.set_text(this.getNetSpeedText0())
+                netSpeedLabel.set_text(this.getNetSpeedText0())
             }
         }
         return false
@@ -192,6 +200,14 @@ export default class CrazyInternetSpeedMeter extends Extension {
         return speed
     }
 
+    unbindUpdateNetSpeed() {
+        if (this.timeoutId != 0) {
+            GLib.Source.remove(this.timeoutId)
+            this.timeoutId = 0
+        }
+        this.delNetSpeedLabel()
+    }
+
     bindUpdateNetSpeed() {
         if (this.timeoutId != 0) {
             GLib.Source.remove(this.timeoutId)
@@ -204,67 +220,99 @@ export default class CrazyInternetSpeedMeter extends Extension {
         )
     }
 
-    enable() {
-        this._settings = this.getSettings()
-
-        // Create a panel button
-        this._indicator = new PanelMenu.Button(0.0, this.metadata.name, false)
-
-        this.netSpeedLabel = new St.Label({
-            text: this.getNetSpeedText0(),
-            style_class: this.getNetSpeedLabelStyleClassName(),
-            y_align: Clutter.ActorAlign.CENTER,
-        })
-        this._indicator.add_child(this.netSpeedLabel)
-
-        // Add the indicator to the panel
-        Main.panel.addToStatusArea(this.uuid, this._indicator)
-
-        this._indicator.menu.addAction(_('Preferences'), () =>
-            this.openPreferences()
-        )
-
-        this._settings.connect('changed::refresh-threshold-in-second', () => {
-            this.bindUpdateNetSpeed()
-        })
-
-        this._settings.connect('changed::show-left-char', () => {
-            if (this.getShowLeftChar()) {
-                this._settings.set_boolean('show-right-char', false)
-            }
-        })
-
-        this._settings.connect('changed::show-right-char', () => {
-            if (this.getShowRightChar()) {
-                this._settings.set_boolean('show-left-char', false)
-            }
-        })
-
-        this._settings.connect('changed::show-border', () => {
-            this.netSpeedLabel.set_style_class_name(
-                this.getNetSpeedLabelStyleClassName()
+    getIndicator() {
+        if (!this._indicator) {
+            this._indicator = new PanelMenu.Button(
+                0.0,
+                this.metadata.name,
+                false
             )
-        })
-
-        let bytes = this.getBytes()
-        this.prevDownloadBytes = bytes[0]
-        this.prevUploadBytes = bytes[1]
-
-        this.bindUpdateNetSpeed()
+        }
+        return this._indicator
     }
 
-    disable() {
-        if (this.timeoutId != 0) {
-            GLib.Source.remove(this.timeoutId)
-            this.timeoutId = 0
+    delNetSpeedLabel() {
+        if (!this._netSpeedLabel) {
+            this._netSpeedLabel = null
         }
+        this.delIndicator()
+        this.delSettings()
+    }
+
+    getNetSpeedLabel() {
+        if (!this._netSpeedLabel) {
+            // Create a panel button
+            let indicator = this.getIndicator()
+
+            this._netSpeedLabel = new St.Label({
+                text: this.getNetSpeedText0(),
+                style_class: this.getNetSpeedLabelStyleClassName(),
+                y_align: Clutter.ActorAlign.CENTER,
+            })
+            indicator.add_child(this._netSpeedLabel)
+
+            // Add the indicator to the panel
+            Main.panel.addToStatusArea(this.uuid, indicator)
+
+            indicator.menu.addAction(_('Preferences'), () =>
+                this.openPreferences()
+            )
+        }
+        return this._netSpeedLabel
+    }
+
+    delSettings() {
+        if (this._settings) {
+            this._settings = null
+        }
+    }
+
+    getSettings() {
+        if (!this._settings) {
+            this._settings = super.getSettings()
+            let netSpeedLabel = this.getNetSpeedLabel()
+            this._settings.connect(
+                'changed::refresh-threshold-in-second',
+                () => {
+                    this.bindUpdateNetSpeed()
+                }
+            )
+
+            this._settings.connect('changed::show-left-char', () => {
+                if (this.getShowLeftChar()) {
+                    this._settings.set_boolean('show-right-char', false)
+                }
+            })
+
+            this._settings.connect('changed::show-right-char', () => {
+                if (this.getShowRightChar()) {
+                    this._settings.set_boolean('show-left-char', false)
+                }
+            })
+
+            this._settings.connect('changed::show-border', () => {
+                netSpeedLabel.set_style_class_name(
+                    this.getNetSpeedLabelStyleClassName()
+                )
+            })
+        }
+        return this._settings
+    }
+
+    delIndicator() {
         if (this._indicator != null) {
             Main.panel._rightBox.remove_child(this._indicator)
             this._indicator.destroy()
             this._indicator = null
         }
-        this.netSpeedLabel = null
-        this._settings = null
+    }
+
+    enable() {
+        this.bindUpdateNetSpeed()
+    }
+
+    disable() {
+        this.unbindUpdateNetSpeed()
     }
 }
 
