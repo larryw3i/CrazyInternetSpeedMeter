@@ -9,24 +9,33 @@ MAINTAINER_EMAIL="larryw3i@163.com"
 MAINTAINER_DOMAIN_NAME=""
 MAINTAINER_NAME="larryw3i"
 EXTENSION_REPO_URL="https://github.com/larryw3i/CrazyInternetSpeedMeter"
-[[ ${MAINTAINER_DOMAIN_NAME} == "" ]] &&
-    EXTENSION_FULL_NAME="${EXTENSION_NAME}@${MAINTAINER_EMAIL/\@/_at_}" ||
+
+EXTENSION_FULL_NAME=""
+if [[ ${MAINTAINER_DOMAIN_NAME} == "" ]]; then
+    EXTENSION_FULL_NAME="${EXTENSION_NAME}@${MAINTAINER_EMAIL/\@/_at_}"
+else
     EXTENSION_FULL_NAME="${EXTENSION_NAME}@${MAINTAINER_DOMAIN_NAME}"
+fi
+
 POT_FILE="${PWD}/po/${EXTENSION_FULL_NAME}.pot"
 DEFAULT_PACK_FILE="${OUT_DIR}/${EXTENSION_FULL_NAME}.shell-extension.zip"
 
 debug_extension() {
     install_extension
     echo "Start debugging. . ."
-    dbus-run-session -- gnome-shell --nested --wayland
+    dbus-run-session    \
+        --              \
+        gnome-shell     \
+            --nested    \
+            --wayland
 }
 
 install_extension() {
     pack_extension
     echo "Install ${DEFAULT_PACK_FILE}. . ."
-    gnome-extensions \
-        install \
-        --force \
+    gnome-extensions    \
+        install         \
+        --force         \
         ${DEFAULT_PACK_FILE}
     echo "${DEFAULT_PACK_FILE} installed."
 }
@@ -40,21 +49,22 @@ compile_schemas() {
 
 update_pot() {
     echo "'xgettext' is extracting translatable strings. . ."
-    xgettext                    \
-        -v                      \
-        --from-code=UTF-8       \
-        --output=${POT_FILE}    \
-        --package-name=${EXTENSION_NAME}                                \
-        --package-version=$(jq ".\"version-name\"" ${METADATA_FILE})    \
+    version=$(jq ".\"version-name\"" ${METADATA_FILE})
+    xgettext                                \
+        -v                                  \
+        --from-code=UTF-8                   \
+        --output=${POT_FILE}                \
+        --package-name=${EXTENSION_NAME}    \
+        --package-version=${version}        \
         src/*.js
     echo "Finish extracting."
 
     for po_file in $(ls ${PWD}/po/*.po); do
         echo "'msgmerge' is merging ${POT_FILE} to ${po_file}. . ."
-        msgmerge \
-            --no-location \
-            -U \
-            ${po_file} \
+        msgmerge            \
+            --no-location   \
+            -U              \
+            ${po_file}      \
             ${POT_FILE}
     done
     echo "Finish merging."
@@ -73,16 +83,16 @@ pack_extension() {
     update_version
     mkdir -p ${OUT_DIR}
     if [[ -f ${DEFAULT_PACK_FILE} ]]; then
-        new_extension_zip_file=${DEFAULT_PACK_FILE/.zip/.$(uuid).zip}
-        echo "Move ${DEFAULT_PACK_FILE} to ${new_extension_zip_file}"
-        mv ${DEFAULT_PACK_FILE} ${new_extension_zip_file}
+        extension_cp=${DEFAULT_PACK_FILE/.zip/.$(uuid).zip}
+        echo "Move ${DEFAULT_PACK_FILE} to ${extension_cp}"
+        mv ${DEFAULT_PACK_FILE} ${extension_cp}
         echo "Finish moving."
     fi
     # glib-compile-schemas ${SRC_DIR}/schemas/
     compile_schemas
-    gnome-extensions pack \
-        --podir=${PWD}/po \
-        -o ${OUT_DIR} \
+    gnome-extensions pack   \
+        --podir=${PWD}/po   \
+        -o ${OUT_DIR}       \
         ${SRC_DIR}
     echo "Finish packing."
 }
