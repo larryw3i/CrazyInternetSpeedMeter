@@ -30,8 +30,8 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js'
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js'
 
 export default class CrazyInternetSpeedMeter extends Extension {
-    static unitBase = 1024.0 // 1 GB == 1024MB or 1MB == 1024KB etc.
-    static units = ['KB/s', 'MB/s', 'GB/s', 'TB/s', 'PB/s', 'EB/s']
+    unitBase = 1024.0 // 1 GB == 1024MB or 1MB == 1024KB etc.
+    units = ['KB/s', 'MB/s', 'GB/s', 'TB/s', 'PB/s', 'EB/s']
 
     float_scale = 1
     prevUploadBytes = 0
@@ -134,13 +134,13 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 let uploadSpeed =
                     (uploadBytes - this.prevUploadBytes) /
                     this.getRefreshThresholdInSecond() /
-                    CrazyInternetSpeedMeter.unitBase
+                    this.unitBase
 
                 // Current download speed
                 let downloadSpeed =
                     (downloadBytes - this.prevDownloadBytes) /
                     this.getRefreshThresholdInSecond() /
-                    CrazyInternetSpeedMeter.unitBase
+                    this.unitBase
 
                 // Show upload + download = total speed on the shell
                 netSpeedLabel.set_text(
@@ -162,12 +162,12 @@ export default class CrazyInternetSpeedMeter extends Extension {
     getFormattedSpeed(speed) {
         // if this.settings
         let i = 0
-        while (speed >= CrazyInternetSpeedMeter.unitBase) {
+        while (speed >= this.unitBase) {
             // Convert speed to KB, MB, GB or TB
-            speed /= CrazyInternetSpeedMeter.unitBase
+            speed /= this.unitBase
             ++i
         }
-        let speed_unit = CrazyInternetSpeedMeter.units[i]
+        let speed_unit = this.units[i]
 
         return this.getFormattedSpeed0(speed, speed_unit)
     }
