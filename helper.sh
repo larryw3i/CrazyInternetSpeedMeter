@@ -1,22 +1,22 @@
 #!/usr/bin/bash
 
 METADATA_FILE="${PWD}/src/metadata.json"
-EXTENSION_FULL_NAME=$(      \
-    jq                      \
-        .uuid               \
-        ${METADATA_FILE}    \
-    | tail -c+2             \
-    | head -c-2             \
+EXTENSION_FULL_NAME=$(
+    jq \
+        .uuid \
+        ${METADATA_FILE} |
+        tail -c+2 |
+        head -c-2
 )
-EXTENSION_NAME=$(               \
-    echo ${EXTENSION_FULL_NAME} \
-    | cut                       \
-        -d '@'                  \
-        -f1                     \
+EXTENSION_NAME=$(
+    echo ${EXTENSION_FULL_NAME} |
+        cut \
+            -d '@' \
+            -f1
 )
-VERSION=$(                  \
-    jq ".\"version-name\""  \
-        ${METADATA_FILE}    \
+VERSION=$(
+    jq ".\"version-name\"" \
+        ${METADATA_FILE}
 )
 PROJECT_DIR="${PWD}"
 SRC_DIR="${PWD}/src"
@@ -57,20 +57,20 @@ debug_extension() {
     copy_site_extension
     install_extension
     echo "Start debugging. . ."
-    dbus-run-session    \
-        --              \
-        gnome-shell     \
-            --nested    \
-            --wayland
+    dbus-run-session \
+        -- \
+        gnome-shell \
+        --nested \
+        --wayland
     restore_site_extension
 }
 
 install_extension() {
     pack_extension
     echo "Install ${DEFAULT_PACK_FILE}. . ."
-    gnome-extensions    \
-        install         \
-        --force         \
+    gnome-extensions \
+        install \
+        --force \
         ${DEFAULT_PACK_FILE}
     echo "${DEFAULT_PACK_FILE} installed."
 }
@@ -85,21 +85,21 @@ compile_schemas() {
 update_pot() {
     echo "'xgettext' is extracting translatable strings. . ."
     version="${VERSION}"
-    xgettext                                \
-        -v                                  \
-        --from-code=UTF-8                   \
-        --output=${POT_FILE}                \
-        --package-name=${EXTENSION_NAME}    \
-        --package-version=${version}        \
+    xgettext \
+        -v \
+        --from-code=UTF-8 \
+        --output=${POT_FILE} \
+        --package-name=${EXTENSION_NAME} \
+        --package-version=${version} \
         src/*.js
     echo "Finish extracting."
 
     for po_file in $(ls ${PWD}/po/*.po); do
         echo "'msgmerge' is merging ${POT_FILE} to ${po_file}. . ."
-        msgmerge            \
-            --no-location   \
-            -U              \
-            ${po_file}      \
+        msgmerge \
+            --no-location \
+            -U \
+            ${po_file} \
             ${POT_FILE}
     done
     echo "Finish merging."
@@ -126,11 +126,16 @@ pack_extension() {
     fi
     # glib-compile-schemas ${SRC_DIR}/schemas/
     compile_schemas
-    gnome-extensions pack   \
-        --podir=${PWD}/po   \
-        -o ${OUT_DIR}       \
+    gnome-extensions pack \
+        --podir=${PWD}/po \
+        -o ${OUT_DIR} \
         ${SRC_DIR}
     echo "Finish packing."
+}
+
+fmt_code() {
+    npx prettier --write .
+    shfmt -i 4 -w -f .
 }
 
 # Let's start
