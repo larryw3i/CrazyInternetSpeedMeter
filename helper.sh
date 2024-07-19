@@ -1,22 +1,15 @@
 #!/usr/bin/bash
 
-EXTENSION_NAME="CrazyInternetSpeedMeter"
+METADATA_FILE="${PWD}/src/metadata.json"
+EXTENSION_FULL_NAME="$(jq .uuid ${METADATA_FILE} | tail -c+2 | head -c-2)"
+EXTENSION_NAME="$(echo ${EXTENSION_FULL_NAME} | cut -d '@' -f1)"
 PROJECT_DIR="${PWD}"
 SRC_DIR="${PWD}/src"
 OUT_DIR="${PWD}/out"
-METADATA_FILE="${PWD}/src/metadata.json"
 MAINTAINER_EMAIL="larryw3i@163.com"
 MAINTAINER_DOMAIN_NAME=""
 MAINTAINER_NAME="larryw3i"
 EXTENSION_REPO_URL="https://github.com/larryw3i/CrazyInternetSpeedMeter"
-
-EXTENSION_FULL_NAME=""
-if [[ ${MAINTAINER_DOMAIN_NAME} == "" ]]; then
-    EXTENSION_FULL_NAME="${EXTENSION_NAME}@${MAINTAINER_EMAIL/\@/_at_}"
-else
-    EXTENSION_FULL_NAME="${EXTENSION_NAME}@${MAINTAINER_DOMAIN_NAME}"
-fi
-
 POT_FILE="${PWD}/po/${EXTENSION_FULL_NAME}.pot"
 DEFAULT_PACK_FILE="${OUT_DIR}/${EXTENSION_FULL_NAME}.shell-extension.zip"
 
