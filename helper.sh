@@ -1,19 +1,60 @@
 #!/usr/bin/bash
 
 METADATA_FILE="${PWD}/src/metadata.json"
-EXTENSION_FULL_NAME="$(jq .uuid ${METADATA_FILE} | tail -c+2 | head -c-2)"
-EXTENSION_NAME="$(echo ${EXTENSION_FULL_NAME} | cut -d '@' -f1)"
+EXTENSION_FULL_NAME=$(      \
+    jq                      \
+        .uuid               \
+        ${METADATA_FILE}    \
+    | tail -c+2             \
+    | head -c-2             \
+)
+EXTENSION_NAME=$(               \
+    echo ${EXTENSION_FULL_NAME} \
+    | cut                       \
+        -d '@'                  \
+        -f1                     \
+)
+VERSION=$(                  \
+    jq ".\"version-name\""  \
+        ${METADATA_FILE}    \
+)
 PROJECT_DIR="${PWD}"
 SRC_DIR="${PWD}/src"
 OUT_DIR="${PWD}/out"
+TEMP_DIR="${PWD}/tmp"
 MAINTAINER_EMAIL="larryw3i@163.com"
-MAINTAINER_DOMAIN_NAME=""
 MAINTAINER_NAME="larryw3i"
 EXTENSION_REPO_URL="https://github.com/larryw3i/CrazyInternetSpeedMeter"
 POT_FILE="${PWD}/po/${EXTENSION_FULL_NAME}.pot"
 DEFAULT_PACK_FILE="${OUT_DIR}/${EXTENSION_FULL_NAME}.shell-extension.zip"
+EXTENSIONS_DIR="${HOME}/.local/share/gnome-shell/extensions"
+EXTENSION_DIR="${EXTENSIONS_DIR}/${EXTENSION_FULL_NAME}"
+EXTENSION_DIR_CP="${TEMP_DIR}/${EXTENSION_FULL_NAME}"
+
+restore_site_extension() {
+    if [[ -d ${EXTENSION_DIR_CP} ]]; then
+        echo "Site extension copy exists."
+        echo "Move \"${EXTENSION_DIR_CP}\" to \"${EXTENSION_DIR}\"."
+        mv ${EXTENSION_DIR_CP} ${EXTENSION_DIR}
+        rm -rf ${EXTENSION_DIR_CP}
+        echo "done."
+    fi
+}
+
+copy_site_extension() {
+    if [[ ! -d ${TEMP_DIR} ]]; then
+        mkdir -p ${TEMP_DIR}
+    fi
+    if [[ -d ${EXTENSION_DIR} ]]; then
+        echo "Site extension exists."
+        echo "Move \"${EXTENSION_DIR}\" to \"${EXTENSION_DIR_CP}\"."
+        mv ${EXTENSION_DIR} ${EXTENSION_DIR_CP}
+        echo "done."
+    fi
+}
 
 debug_extension() {
+    copy_site_extension
     install_extension
     echo "Start debugging. . ."
     dbus-run-session    \
@@ -21,6 +62,7 @@ debug_extension() {
         gnome-shell     \
             --nested    \
             --wayland
+    restore_site_extension
 }
 
 install_extension() {
@@ -42,7 +84,7 @@ compile_schemas() {
 
 update_pot() {
     echo "'xgettext' is extracting translatable strings. . ."
-    version=$(jq ".\"version-name\"" ${METADATA_FILE})
+    version="${VERSION}"
     xgettext                                \
         -v                                  \
         --from-code=UTF-8                   \
@@ -64,11 +106,12 @@ update_pot() {
 }
 
 update_version() {
-    version0=$(jq .\"version-name\" ${METADATA_FILE})
+    version0="${VERSION}"
     version1=$(date -u +%Y%m%d.%H%M%S)
     sed -i "s/${version0}/\"${version1}\"/g" ${METADATA_FILE}
     jq . ${METADATA_FILE}
     echo "${METADATA_FILE} was updated."
+    VERSION=${version1}
 }
 
 pack_extension() {
