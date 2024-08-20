@@ -232,7 +232,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
     }
 
     delNetSpeedLabel() {
-        if (!this._netSpeedLabel) {
+        if (this._netSpeedLabel) {
             this._netSpeedLabel = null
         }
         this.delIndicator()
