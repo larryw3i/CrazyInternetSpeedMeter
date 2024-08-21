@@ -12,13 +12,13 @@
       <default>false</default>
     </key>
     <key name="show-byte-per-second-text" type="b">
-      <default>true</default>
+      <default>false</default>
     </key>     
     <key name="refresh-threshold-in-second" type="i">
       <default>2</default>
     </key>
     <key name="show-border" type="b">
-      <default>false</default>
+      <default>true</default>
     </key>
   </schema>
 </schemalist>
