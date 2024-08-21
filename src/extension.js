@@ -68,13 +68,14 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
     getNetSpeedText0() {
         let char_count = 11
-        if (this.getShowRightChar()) {
-            --char_count
+        if (!this.getShowRightChar()) {
+            char_count = char_count - 1
         }
-        if (this.getShowBytePerSecondText()) {
+        if (!this.getShowBytePerSecondText()) {
             char_count = char_count - 3
         }
         let defaultNetSpeedText = ' '.repeat(char_count)
+        
         return defaultNetSpeedText
     }
 
@@ -254,7 +255,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
             }
         }
         speed = speed_int + '.' + speed_float
-        if (this.getShowBytePerSecondText()) {
+        if (!this.getShowBytePerSecondText()) {
             speed_unit = speed_unit.slice(0, -3)
         }
         speed = speed + speed_unit

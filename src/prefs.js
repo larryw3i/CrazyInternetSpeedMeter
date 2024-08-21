@@ -111,7 +111,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
             'show-byte-per-second-text',
             showBytePerSecondTextRow,
             'active',
-            Gio.SettingsBindFlags.INVERT_BOOLEAN
+            Gio.SettingsBindFlags.DEFAULT
         )
 
         const refreshThresholdInSecondRow = new Adw.SpinRow({
