@@ -1,10 +1,10 @@
-# ⇅1023.4KB/s Internet Speed Meter
+# 1023.4KB/s⇅ Crazy Internet Speed Meter
 
 A simple and minimal Internet Speed Meter extension for the Gnome Shell.
 
 To use this extension, you will need
 
--   Gnome Shell 40 or later
+-   Gnome Shell 45 or later
 
 ## Install
 
@@ -17,7 +17,7 @@ Visit [Crazy Internet Speed Meter - GNOME Shell Extensions](https://extensions.g
 1. Clone this repository
 
     ```bash
-    git clone https://gitlab.gnome.org/larrywei/crazyinternetspeedmeter
+    git clone https://gitlab.gnome.org/larryw3i/Crazy1nternetSpeedMeter
     ```
 
 2. Change current directory to repository
@@ -29,7 +29,7 @@ Visit [Crazy Internet Speed Meter - GNOME Shell Extensions](https://extensions.g
 3. Now run
 
     ```bash
-    chmod +x ./CrazyInternetSpeedMeter.sh && ./CrazyInternetSpeedMeter.sh -i
+    chmod +x ./helper.sh && ./helper.sh -i
     ```
 
 4. If you are using Wayland, log out and then log in. Otherwise press `ALT + F2` and then type `r` and press `Enter`.
