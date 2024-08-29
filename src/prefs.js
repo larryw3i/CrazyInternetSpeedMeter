@@ -104,7 +104,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
 
         const showBytePerSecondTextRow = new Adw.SwitchRow({
             title: _("Show \"B/s\" text"),
-            subtitle: _("Whether to show 'B/s' text."),
+            subtitle: _("Whether to show \"B/s\" text."),
         })
         group.add(showBytePerSecondTextRow)
         window._settings.bind(

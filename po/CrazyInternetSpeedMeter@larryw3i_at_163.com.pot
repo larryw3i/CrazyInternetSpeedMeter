@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CrazyInternetSpeedMeter \"20240202.0855\"\n"
+"Project-Id-Version: CrazyInternetSpeedMeter \"20240829.131123\"\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-02 09:01+0800\n"
+"POT-Creation-Date: 2024-08-29 21:16+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,75 +17,75 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/extension.js:221
+#: src/extension.js:167
 msgid "Preferences"
 msgstr ""
 
-#: src/prefs.js:27
+#: src/prefs.js:25
 msgid "Crazy Internet Speed Meter"
 msgstr ""
 
-#: src/prefs.js:28
+#: src/prefs.js:26
 msgid "Internet Speed Meter"
 msgstr ""
 
-#: src/prefs.js:39
+#: src/prefs.js:35
 msgid "General"
 msgstr ""
 
-#: src/prefs.js:45
+#: src/prefs.js:41
 msgid "Appearance"
 msgstr ""
 
-#: src/prefs.js:46
+#: src/prefs.js:42
 #, javascript-format
 msgid "Configure the appearance of %s."
 msgstr ""
 
-#: src/prefs.js:72
+#: src/prefs.js:69
 msgid "Internet speed icon"
 msgstr ""
 
-#: src/prefs.js:73
+#: src/prefs.js:70
 msgid "Select the icon to display next to the text."
 msgstr ""
 
-#: src/prefs.js:86
+#: src/prefs.js:83
 msgid "Show right icon"
 msgstr ""
 
-#: src/prefs.js:87
+#: src/prefs.js:84
 msgid "Whether to show speed text with right icon."
 msgstr ""
 
-#: src/prefs.js:97
+#: src/prefs.js:94
 msgid "Show left icon"
 msgstr ""
 
-#: src/prefs.js:98
+#: src/prefs.js:95
 msgid "Whether to show speed text with left icon."
 msgstr ""
 
-#: src/prefs.js:109
-msgid "Show 'B/s' text"
+#: src/prefs.js:106
+msgid "Show \"B/s\" text"
 msgstr ""
 
-#: src/prefs.js:110
-msgid "Whether to show 'B/s' text."
+#: src/prefs.js:107
+msgid "Whether to show \"B/s\" text."
 msgstr ""
 
-#: src/prefs.js:121
+#: src/prefs.js:118
 msgid "Refresh threshold (in second)"
 msgstr ""
 
-#: src/prefs.js:123
+#: src/prefs.js:120
 msgid "Refresh the network traffic speed after specific time."
 msgstr ""
 
-#: src/prefs.js:141
+#: src/prefs.js:138
 msgid "Show border"
 msgstr ""
 
-#: src/prefs.js:142
+#: src/prefs.js:139
 msgid "Whether to show border."
 msgstr ""
