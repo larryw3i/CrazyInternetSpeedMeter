@@ -217,7 +217,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 this.prevDownloadBytes = downloadBytes
                 return true
             } catch (e) {
-                log(`Can not fetch internet speed from /proc/net/dev: ${e}`)
+                log(_('Can not fetch internet speed from "/proc/net/dev": %s'),e)
                 netSpeedLabel.set_text(this.getNetSpeedText0())
             }
         }
