@@ -26,10 +26,32 @@ MAINTAINER_EMAIL="larryw3i@163.com"
 MAINTAINER_NAME="larryw3i"
 EXTENSION_REPO_URL="https://github.com/larryw3i/CrazyInternetSpeedMeter"
 POT_FILE="${PWD}/po/${EXTENSION_FULL_NAME}.pot"
-DEFAULT_PACK_FILE="${OUT_DIR}/${EXTENSION_FULL_NAME}.shell-extension.zip"
+DEFAULT_PACK_NAME="${EXTENSION_FULL_NAME}.shell-extension.zip"
+DEFAULT_PACK_FILE="${OUT_DIR}/${DEFAULT_PACK_NAME}"
 EXTENSIONS_DIR="${HOME}/.local/share/gnome-shell/extensions"
 EXTENSION_DIR="${EXTENSIONS_DIR}/${EXTENSION_FULL_NAME}"
 EXTENSION_DIR_CP="${TEMP_DIR}/${EXTENSION_FULL_NAME}"
+RELEASE_DIR="${PROJECT_DIR}/releases"
+RELEASE_HASH_FILE="${RELEASE_DIR}/sha256sums"
+
+record_release_hash() {
+    sha256=""
+    if [[ ! -x $(which sha256sum) ]]; then
+        echo "Command \"sha256sum\" was not found."
+    fi
+    if [[ ! -x $(which sed) ]]; then
+        echo "Command \"sed\" was not found."
+    fi
+
+    cd ${OUT_DIR}
+    sha256=$(sha256sum ${DEFAULT_PACK_FILE})
+    sha256=$(echo ${sha256} | cut -d " " -f1)
+    sha256="${sha256} ${VERSION}"
+    cd ..
+    echo "${sha256}"
+    sed -i "1i ${sha256}" ${RELEASE_HASH_FILE}
+    echo "Hash of release was writed."
+}
 
 restore_site_extension() {
     if [[ -d ${EXTENSION_DIR_CP} ]]; then
@@ -105,6 +127,7 @@ update_pot() {
     echo "Finish merging."
 }
 
+
 update_version() {
     version0="${VERSION}"
     version1=$(date -u +%Y%m%d.%H%M%S)
@@ -130,6 +153,9 @@ pack_extension() {
         --podir=${PWD}/po \
         -o ${OUT_DIR} \
         ${SRC_DIR}
+    
+    record_release_hash
+
     echo "Finish packing."
 }
 
