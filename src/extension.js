@@ -217,7 +217,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 this.prevDownloadBytes = downloadBytes
                 return true
             } catch (e) {
-                log(
+                console.log(
                     _('Can not fetch internet speed from "/proc/net/dev": %s'),
                     e
                 )

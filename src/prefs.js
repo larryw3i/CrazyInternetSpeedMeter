@@ -81,7 +81,8 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
         netSpeedCharsRow.set_tooltip_text(
             _(
                 'To fix the size of this extension, ' +
-                    'only some Mono characters are available here.'
+                    'only some Mono characters are available here. ' +
+                    "(Changing the size will distract your attention)"
             )
         )
 
