@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CrazyInternetSpeedMeter \"20240201.1654\"\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-04 21:06+0800\n"
+"POT-Creation-Date: 2024-12-24 01:59+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,22 +40,27 @@ msgstr ""
 msgid "Configure the appearance of %s."
 msgstr ""
 
-msgid "Internet speed icon"
+msgid "Internet speed char"
 msgstr ""
 
 msgid "Select the icon to display next to the text."
 msgstr ""
 
-msgid "Show right icon"
+msgid ""
+"To fix the size of this extension, only some Mono characters are available "
+"here."
 msgstr ""
 
-msgid "Whether to show speed text with right icon."
+msgid "Show right char"
 msgstr ""
 
-msgid "Show left icon"
+msgid "Whether to show speed text with right char."
 msgstr ""
 
-msgid "Whether to show speed text with left icon."
+msgid "Show left char"
+msgstr ""
+
+msgid "Whether to show speed text with left char."
 msgstr ""
 
 msgid "Show \"B/s\" text"

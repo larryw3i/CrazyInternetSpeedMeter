@@ -160,7 +160,7 @@ pack_extension() {
 }
 
 fmt_code() {
-    npx prettier --write .
+    npx prettier --write --print-width 80 .
     shfmt -i 4 -w -f .
 }
 

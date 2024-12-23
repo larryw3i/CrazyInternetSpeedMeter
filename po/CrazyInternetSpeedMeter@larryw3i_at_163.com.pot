@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CrazyInternetSpeedMeter \"20240904.130449\"\n"
+"Project-Id-Version: CrazyInternetSpeedMeter \"20241223.173628\"\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-04 21:06+0800\n"
+"POT-Creation-Date: 2024-12-24 01:59+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,7 +48,7 @@ msgid "Configure the appearance of %s."
 msgstr ""
 
 #: src/prefs.js:69
-msgid "Internet speed icon"
+msgid "Internet speed char"
 msgstr ""
 
 #: src/prefs.js:70
@@ -56,41 +56,47 @@ msgid "Select the icon to display next to the text."
 msgstr ""
 
 #: src/prefs.js:83
-msgid "Show right icon"
+msgid ""
+"To fix the size of this extension, only some Mono characters are available "
+"here."
 msgstr ""
 
-#: src/prefs.js:84
-msgid "Whether to show speed text with right icon."
+#: src/prefs.js:89
+msgid "Show right char"
 msgstr ""
 
-#: src/prefs.js:94
-msgid "Show left icon"
+#: src/prefs.js:90
+msgid "Whether to show speed text with right char."
 msgstr ""
 
-#: src/prefs.js:95
-msgid "Whether to show speed text with left icon."
+#: src/prefs.js:100
+msgid "Show left char"
 msgstr ""
 
-#: src/prefs.js:106
+#: src/prefs.js:101
+msgid "Whether to show speed text with left char."
+msgstr ""
+
+#: src/prefs.js:112
 msgid "Show \"B/s\" text"
 msgstr ""
 
-#: src/prefs.js:107
+#: src/prefs.js:113
 msgid "Whether to show \"B/s\" text."
 msgstr ""
 
-#: src/prefs.js:118
+#: src/prefs.js:124
 msgid "Refresh threshold (in second)"
 msgstr ""
 
-#: src/prefs.js:120
+#: src/prefs.js:126
 msgid "Refresh the network traffic speed after specific time."
 msgstr ""
 
-#: src/prefs.js:138
+#: src/prefs.js:144
 msgid "Show border"
 msgstr ""
 
-#: src/prefs.js:139
+#: src/prefs.js:145
 msgid "Whether to show border."
 msgstr ""

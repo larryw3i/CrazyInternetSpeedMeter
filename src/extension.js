@@ -75,7 +75,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
             char_count = char_count - 3
         }
         let defaultNetSpeedText = ' '.repeat(char_count)
-        
+
         return defaultNetSpeedText
     }
 
@@ -217,7 +217,10 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 this.prevDownloadBytes = downloadBytes
                 return true
             } catch (e) {
-                log(_('Can not fetch internet speed from "/proc/net/dev": %s'),e)
+                log(
+                    _('Can not fetch internet speed from "/proc/net/dev": %s'),
+                    e
+                )
                 netSpeedLabel.set_text(this.getNetSpeedText0())
             }
         }

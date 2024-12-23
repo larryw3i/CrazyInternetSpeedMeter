@@ -18,7 +18,7 @@ import {
 
 export default class CrazyInternetSpeedMeterPreferences extends ExtensionPreferences {
     netSpeedCharList = new Gtk.StringList({
-        strings: ["F", "T", "~", "*", "#", "^"],
+        strings: ['F', 'T', '~', '*', '#', '^'],
     })
 
     getPetNameWithSpace_T() {
@@ -66,7 +66,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
             return 0
         }
         const netSpeedCharsRow = new Adw.ComboRow({
-            title: _('Internet speed icon'),
+            title: _('Internet speed char'),
             subtitle: _('Select the icon to display next to the text.'),
             model: this.netSpeedCharList,
             selected: getSavedNetSpeedCharIndex(),
@@ -78,10 +78,16 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
                 this.netSpeedCharList.get_string(widget.selected)
             )
         })
+        netSpeedCharsRow.set_tooltip_text(
+            _(
+                'To fix the size of this extension, ' +
+                    'only some Mono characters are available here.'
+            )
+        )
 
         const showRightCharRow = new Adw.SwitchRow({
-            title: _('Show right icon'),
-            subtitle: _('Whether to show speed text with right icon.'),
+            title: _('Show right char'),
+            subtitle: _('Whether to show speed text with right char.'),
         })
         group.add(showRightCharRow)
         window._settings.bind(
@@ -91,8 +97,8 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
             Gio.SettingsBindFlags.DEFAULT
         )
         const showLeftCharRow = new Adw.SwitchRow({
-            title: _('Show left icon'),
-            subtitle: _('Whether to show speed text with left icon.'),
+            title: _('Show left char'),
+            subtitle: _('Whether to show speed text with left char.'),
         })
         group.add(showLeftCharRow)
         window._settings.bind(
@@ -103,8 +109,8 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
         )
 
         const showBytePerSecondTextRow = new Adw.SwitchRow({
-            title: _("Show \"B/s\" text"),
-            subtitle: _("Whether to show \"B/s\" text."),
+            title: _('Show "B/s" text'),
+            subtitle: _('Whether to show "B/s" text.'),
         })
         group.add(showBytePerSecondTextRow)
         window._settings.bind(
