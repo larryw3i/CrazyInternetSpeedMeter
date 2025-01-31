@@ -152,6 +152,10 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 this.refreshSpeed()
             })
 
+            this._settings.connect('changed::net-speed-char', () => {
+                this.refreshSpeed()
+            })
+
             this._settings.connect('changed::show-border', () => {
                 netSpeedLabel.set_style_class_name(
                     this.getNetSpeedLabelStyleClassName()

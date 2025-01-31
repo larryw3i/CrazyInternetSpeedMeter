@@ -161,7 +161,11 @@ pack_extension() {
 
 fmt_code() {
     npx prettier --write --print-width 80 .
-    shfmt -i 4 -w -f .
+    if [[ -x $(which shfmt) ]];
+    then
+        shfmt -i 4 -w -f .
+    fi
+
 }
 
 # Let's start
