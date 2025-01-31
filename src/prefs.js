@@ -82,7 +82,7 @@ export default class CrazyInternetSpeedMeterPreferences extends ExtensionPrefere
             _(
                 'To fix the size of this extension, ' +
                     'only some Mono characters are available here. ' +
-                    "(Changing the size will distract your attention)"
+                    '(Changing the size will distract your attention)'
             )
         )
 

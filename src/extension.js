@@ -36,6 +36,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
     float_scale = 1
     prevUploadBytes = 0
     prevDownloadBytes = 0
+    prevSpeed = 0
     container = null
     timeoutId = 0
     _netSpeedLabel = null
@@ -117,6 +118,13 @@ export default class CrazyInternetSpeedMeter extends Extension {
         return [downloadBytes, uploadBytes]
     }
 
+    refreshSpeed() {
+         let netSpeedLabel = this.getNetSpeedLabel()
+         netSpeedLabel.set_text(
+            this.getFormattedSpeed(this.prevSpeed)
+         )
+    }
+
     getSettings() {
         if (!this._settings) {
             this._settings = super.getSettings()
@@ -132,12 +140,18 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 if (this.getShowLeftChar()) {
                     this._settings.set_boolean('show-right-char', false)
                 }
+                this.refreshSpeed()
             })
 
             this._settings.connect('changed::show-right-char', () => {
                 if (this.getShowRightChar()) {
                     this._settings.set_boolean('show-left-char', false)
                 }
+                this.refreshSpeed()
+            })
+
+            this._settings.connect("changed::show-byte-per-second-text",() => {
+                this.refreshSpeed()
             })
 
             this._settings.connect('changed::show-border', () => {
@@ -215,6 +229,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
 
                 this.prevUploadBytes = uploadBytes
                 this.prevDownloadBytes = downloadBytes
+                this.prevSpeed = uploadSpeed + downloadSpeed
                 return true
             } catch (e) {
                 console.log(

@@ -4,7 +4,7 @@ A simple and minimal Internet Speed Meter extension for the Gnome Shell.
 
 To use this extension, you will need
 
--   Gnome Shell 45 or later
+- Gnome Shell 45 or later
 
 ## Install
 
