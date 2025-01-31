@@ -119,10 +119,8 @@ export default class CrazyInternetSpeedMeter extends Extension {
     }
 
     refreshSpeed() {
-         let netSpeedLabel = this.getNetSpeedLabel()
-         netSpeedLabel.set_text(
-            this.getFormattedSpeed(this.prevSpeed)
-         )
+        let netSpeedLabel = this.getNetSpeedLabel()
+        netSpeedLabel.set_text(this.getFormattedSpeed(this.prevSpeed))
     }
 
     getSettings() {
@@ -150,7 +148,7 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 this.refreshSpeed()
             })
 
-            this._settings.connect("changed::show-byte-per-second-text",() => {
+            this._settings.connect('changed::show-byte-per-second-text', () => {
                 this.refreshSpeed()
             })
 
