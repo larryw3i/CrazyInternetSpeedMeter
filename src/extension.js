@@ -100,8 +100,8 @@ export default class CrazyInternetSpeedMeter extends Extension {
                 break
             }
             if (
-                // Refer https://github.com/AlShakib/InternetSpeedMeter/blob/\
-                // master/src/extension.js
+                // Refer to https://github.com/AlShakib/InternetSpeedMeter/\
+                // blob/master/src/extension.js
                 !column[0].match(/^lo$/) &&
                 !column[0].match(/^br[0-9]+/) &&
                 !column[0].match(/^tun[0-9]+/) &&
